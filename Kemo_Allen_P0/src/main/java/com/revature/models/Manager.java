@@ -1,5 +1,5 @@
 package com.revature.models;
 
-public class Manager {
+public class Manager extends User{
 
 }
