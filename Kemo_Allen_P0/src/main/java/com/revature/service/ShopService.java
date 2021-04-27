@@ -129,10 +129,16 @@ public class ShopService {
 		return inventory;
 	}
 	
-	public Offer getOfferByCustomerId(int id) {
-		Offer offer = null;
-		offer = sDao.selectOfferByCustomerId(id);
-		return offer;
+	public List<Offer> getOffesrByCustomerId(int id) {
+		List<Offer> offerList;
+		offerList = sDao.selectOffersByCustomerId(id);
+		return offerList;
+	}
+	
+	public List<Offer> getOffersBiItemId(int id){
+		List<Offer> offerList;
+		offerList = sDao.selectOffersByItemId(id);
+		return offerList;
 	}
 	
 	public List<Offer> getAllOffers(){
@@ -141,10 +147,16 @@ public class ShopService {
 		return offerList;
 	}
 	
-	public OfferHistory getOfferHistoryByCustomerId(int id) {
-		OfferHistory oH = null;
-		oH = sDao.selectOfferHistoryByCustomerId(id);
-		return oH;
+	public List<OfferHistory> getOfferHistoriesByCustomerId(int id){
+		List<OfferHistory> oHList;
+		oHList = sDao.selectOfferHistoriesByCustomerId(id);
+		return oHList;
+	}
+	
+	public List<OfferHistory> getOfferHistoriesByItemId(int id){
+		List<OfferHistory> oHList;
+		oHList = sDao.selectOfferHistoriesByItemId(id);
+		return oHList;
 	}
 	
 	public List<OfferHistory> getAllOfferHistories(){
@@ -153,10 +165,10 @@ public class ShopService {
 		return oHList;
 	}
 	
-	public Payment getPaymentByCustomerId(int id) {
-		Payment payment = null;
-		payment = sDao.selectPaymentByCustomerId(id);
-		return payment;
+	public List<Payment> getPaymentsByCustomerId(int id) {
+		List<Payment> paymentList;
+		paymentList = sDao.selectPaymentsByCustomerId(id);
+		return paymentList;
 	}
 	
 	public List<Payment> getAllPayments(){
@@ -165,32 +177,40 @@ public class ShopService {
 		return paymentList;
 	}
 	
-	public boolean updateCustomer(Customer cust) {
-		return sDao.updateCustomer(cust);
+	public boolean updateCustomerLogin(Customer cust) {
+		return sDao.updateCustomerLogin(cust);
 	}
 	
-	public boolean updateEmployee(Employee emp) {
-		return sDao.updateEmployee(emp);
+	public boolean updateEmployeeLogin(Employee emp) {
+		return sDao.updateEmployeeLogin(emp);
 	}
 	
-	public boolean updateManager(Manager mana) {
-		return sDao.updateManager(mana);
+	public boolean updateManagerLogin(Manager mana) {
+		return sDao.updateManagerLogin(mana);
 	}
 	
-	public boolean updateItem(Item item) {
-		return sDao.updateItem(item);
+	public boolean updateItemDescription(Item item) {
+		return sDao.updateItemDescription(item);
 	}
 	
-	public boolean updateOffer(Offer offer) {
-		return sDao.updateOffer(offer);
+	public boolean updateItemPrice(Item item) {
+		return sDao.updateItemPrice(item);
 	}
 	
-	public boolean updateOfferHistory(OfferHistory oH) {
-		return sDao.updateOfferHistory(oH);
+	public boolean updateItemIsOwned(Item item) {
+		return sDao.updateItemIsOwned(item);
 	}
 	
-	public boolean updatePayment(Payment pay) {
-		return sDao.updatePayment(pay);
+	public boolean updateOfferIsAccepted(Offer offer) {
+		return sDao.updateOfferIsAccepted(offer);
+	}
+	
+	public boolean updateOfferHistoryStatus(OfferHistory oH) {
+		return sDao.updateOfferHistoryStatus(oH);
+	}
+	
+	public boolean updateRemainingPayments(Payment pay) {
+		return sDao.updateRemainingPayments(pay);
 	}
 	
 	public boolean deleteCustomer(int id) {
@@ -213,8 +233,8 @@ public class ShopService {
 		return sDao.deleteOfferByItemId(id);
 	}
 	
-	public boolean deleteUnacceptedItemOffers(int id) {
-		return sDao.deleteOfferUnaccepted(id);
+	public boolean deleteUnacceptedItemOffers(int id, boolean isAccepted) {
+		return sDao.deleteOfferUnaccepted(id, isAccepted);
 	}
 	
 	public boolean deletePayment(int id) {

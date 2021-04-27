@@ -53,13 +53,15 @@ public interface ShopDAO {
 	List<Payment> selectAllPayments();
 	
 	//Update
-	boolean updateCustomer(Customer cust);
-	boolean updateEmployee(Employee emp);
-	boolean updateManager(Manager mana);
-	boolean updateItem(Item item);
-	boolean updateOffer(Offer offer);
-	boolean updateOfferHistory(OfferHistory oH);
-	boolean updatePayment(Payment pay);
+	boolean updateCustomerLogin(Customer cust);
+	boolean updateEmployeeLogin(Employee emp);
+	boolean updateManagerLogin(Manager mana);
+	boolean updateItemDescription(Item item);
+	boolean updateItemPrice(Item item);
+	boolean updateItemIsOwned(Item item);
+	boolean updateOfferIsAccepted(Offer offer);
+	boolean updateOfferHistoryStatus(OfferHistory oH);
+	boolean updateRemainingPayments(Payment pay);
 	
 	//Delete
 	boolean deleteCustomerById(int id);

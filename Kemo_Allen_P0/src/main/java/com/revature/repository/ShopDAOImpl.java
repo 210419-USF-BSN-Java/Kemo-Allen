@@ -779,108 +779,206 @@ public class ShopDAOImpl implements ShopDAO{
 	}
 
 	@Override
-	public boolean updateCustomer(Customer cust) {
+	public boolean updateCustomerLogin(Customer cust) {
 		boolean success = false;
 		
-		String sql = "";
+		String sql = "UPDATE customers SET is_logged_in = ? WHERE user_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setBoolean(1, cust.isLoggedIn());
+			ps.setInt(2, cust.getId());
+			
+			ps.execute();
+			
+			success = true;
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
-			LOG.error("");
+			LOG.error("There was an issue with updating a customer.");
 		}
 		
 		return success;
 	}
 
 	@Override
-	public boolean updateEmployee(Employee emp) {
+	public boolean updateEmployeeLogin(Employee emp) {
 		boolean success = false;
 		
-		String sql = "";
+		String sql = "UPDATE employees SET is_logged_in = ? WHERE user_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setBoolean(1, emp.isLoggedIn());
+			ps.setInt(2, emp.getId());
+			
+			ps.execute();
+			
+			success = true;
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
-			LOG.error("");
+			LOG.error("There was an issue with updating an employee.");
 		}
 		
 		return success;
 	}
 
 	@Override
-	public boolean updateManager(Manager mana) {
+	public boolean updateManagerLogin(Manager mana) {
 		boolean success = false;
 		
-		String sql = "";
+		String sql = "UPDATE managers SET is_logged_in = ? WHERE user_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setBoolean(1, mana.isLoggedIn());
+			ps.setInt(2, mana.getId());
+			
+			ps.execute();
+			
+			success = true;
+			
 		}catch(SQLException e) {
 			e.printStackTrace();
-			LOG.error("");
+			LOG.error("There was an issue with updating a manager.");
 		}
 		
 		return success;
 	}
 
 	@Override
-	public boolean updateItem(Item item) {
+	public boolean updateItemDescription(Item item) {
 		boolean success = false;
 		
-		String sql = "";
+		String sql = "UPDATE items SET description = ? WHERE item_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, item.getDescription());
+			ps.setInt(2, item.getItemId());
+			
+			ps.execute();
+			
+			success = true;
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
-			LOG.error("");
+			LOG.error("There was an issue when updating an item.");
+		}
+		
+		return success;
+	}
+	
+	@Override
+	public boolean updateItemPrice(Item item) {
+		boolean success = false;
+		
+		String sql = "UPDATE items SET price = ? WHERE item_id = ?";
+		
+		try (Connection conn = ShopConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setDouble(1, item.getPrice());
+			ps.setInt(2, item.getItemId());
+			
+			ps.execute();
+			
+			success = true;
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.error("There was an issue when updating an item.");
+		}
+		
+		return success;
+	}
+	
+	@Override
+	public boolean updateItemIsOwned(Item item) {
+		boolean success = false;
+		
+		String sql = "UPDATE items SET is_owned = ? WHERE item_id = ?";
+		
+		try (Connection conn = ShopConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setBoolean(1, item.isOwned());
+			ps.setInt(2, item.getItemId());
+			
+			ps.execute();
+			
+			success = true;
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.error("There was an issue when updating an item.");
 		}
 		
 		return success;
 	}
 
 	@Override
-	public boolean updateOffer(Offer offer) {
+	public boolean updateOfferIsAccepted(Offer offer) {
 		boolean success = false;
 		
-		String sql = "";
+		String sql = "UPDATE offers SET is_accepted = ? WHERE offer_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setBoolean(1, offer.isAccepted());
+			ps.setInt(2, offer.getOfferId());
+			
+			ps.execute();
+			
+			success = true;
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
-			LOG.error("");
+			LOG.error("There was an issue when updating an offer.");
 		}
 		
 		return success;
 	}
 
 	@Override
-	public boolean updateOfferHistory(OfferHistory oH) {
+	public boolean updateOfferHistoryStatus(OfferHistory oH) {
 		boolean success = false;
 		
-		String sql = "";
+		String sql = "UPDATE offer_histories SET status = ? WHERE history_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, oH.getStatus());
+			ps.setInt(2, oH.getHistoryId());
+			
+			ps.execute();
+			
+			success = true;
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
-			LOG.error("");
+			LOG.error("There was an issue when updating an offer history.");
 		}
 		
 		return success;
 	}
 
 	@Override
-	public boolean updatePayment(Payment pay) {
+	public boolean updateRemainingPayments(Payment pay) {
 		boolean success = false;
 		
-		String sql = "";
+		String sql = "UPDATE payments SET payments_remaining = ? WHERE payment_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1,pay.getPaymentsRemaining());
+			ps.setInt(2, pay.getPaymentId());
+			
+			ps.execute();
+			
+			success = true;
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
