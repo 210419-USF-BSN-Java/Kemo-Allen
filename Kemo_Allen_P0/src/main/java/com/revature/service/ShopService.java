@@ -16,6 +16,10 @@ public class ShopService {
 
 	private ShopDAO sDao;
 	
+	public ShopService() {
+		
+	}
+	
 	public ShopService(ShopDAO sDao) {
 		super();
 		this.sDao = sDao;

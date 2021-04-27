@@ -1,7 +1,19 @@
 package com.revature.models;
 
 public class Customer extends User{
-	private int inventoryId;
-	private int accountId;
 
+	public Customer() {
+		super();
+	}
+
+	public Customer(int id, String userName, String password, boolean isLoggedIn) {
+		super(id, userName, password, isLoggedIn);
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [id=" + id + ", userName=" + userName + ", password=" + password + ", isLoggedIn=" + isLoggedIn
+				+ "]";
+	}	
+	
 }

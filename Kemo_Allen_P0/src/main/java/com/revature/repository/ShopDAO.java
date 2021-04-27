@@ -41,13 +41,15 @@ public interface ShopDAO {
 	
 	List<Inventory> selectInventoryByCustomerId(int id);
 	
-	Offer selectOfferByCustomerId(int id);
+	List<Offer> selectOffersByCustomerId(int id);
+	List<Offer> selectOffersByItemId(int id);
 	List<Offer> selectAllOffers();
 	
-	OfferHistory selectOfferHistoryByCustomerId(int id);
+	List<OfferHistory> selectOfferHistoriesByCustomerId(int id);
+	List<OfferHistory> selectOfferHistoriesByItemId(int id);
 	List<OfferHistory> selectAllOfferHistories();
 	
-	Payment selectPaymentByCustomerId(int id);
+	List<Payment> selectPaymentsByCustomerId(int id);
 	List<Payment> selectAllPayments();
 	
 	//Update
@@ -64,8 +66,8 @@ public interface ShopDAO {
 	boolean deleteEmployeeById(int id);
 	boolean deleteItemById(int id);
 	boolean deleteInventoryByCustomerId(int id);
-	boolean deleteOfferByItemId(int id);
-	boolean deleteOfferUnaccepted(int id);
+	boolean deleteOfferByItemId(int id); //When deleting an item 
+	boolean deleteOfferUnaccepted(int id, boolean isAccepted);
 	boolean deletePaymentByCustomerId(int id);
 
 }
