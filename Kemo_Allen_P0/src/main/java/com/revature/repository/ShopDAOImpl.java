@@ -32,6 +32,7 @@ public class ShopDAOImpl implements ShopDAO{
 		boolean success = false;
 		
 		String sql = "INSERT INTO customers (user_name, pass_word) VALUES (?,?)";
+		//String sql = "INSERT INTO customers (user_name, pass_word) VALUES (?,?) generating user_id";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
@@ -40,6 +41,11 @@ public class ShopDAOImpl implements ShopDAO{
 			ps.setString(2, cust.getPassword());
 			
 			ps.execute();
+			
+//			ResultSet rs = ps.executeQuery(); //gets the user_id from the generating, so this can be used as a return 
+//			if(rs.next()) { //if keys were generated from the ps.execute
+//			
+//			}
 			
 			success = true;
 			
@@ -134,7 +140,7 @@ public class ShopDAOImpl implements ShopDAO{
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, inv.getCustomerId());
-			ps.setInt(1, inv.getItemId());
+			ps.setInt(2, inv.getItemId());
 			
 			ps.execute();
 			
@@ -158,7 +164,7 @@ public class ShopDAOImpl implements ShopDAO{
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, offer.getCustomerId());
-			ps.setInt(1, offer.getItemId());
+			ps.setInt(2, offer.getItemId());
 			
 			ps.execute();
 			
@@ -521,6 +527,35 @@ public class ShopDAOImpl implements ShopDAO{
 		
 		return itemList;
 	}
+	
+	@Override
+	public List<Item> selectUnownedItems() {
+		List<Item> itemList = new LinkedList<>();
+		
+		String sql = "SELECT * FROM items WHERE is_owned = ?";
+		
+		try (Connection conn = ShopConnection.getConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setBoolean(1, false);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				itemList.add(new Item(rs.getInt("item_id"),
+						rs.getString("item_name"),
+						rs.getString("description"),
+						rs.getDouble("price"),
+						rs.getBoolean("is_owned")));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.error("There was an issue when getting a list of items.");
+		}
+		
+		return itemList;
+	}
 
 	@Override
 	public List<Inventory> selectInventoryByCustomerId(int id) {
@@ -531,6 +566,7 @@ public class ShopDAOImpl implements ShopDAO{
 		try(Connection conn = ShopConnection.getConnection()){
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
 			
 			ResultSet rs = ps.executeQuery();
 			

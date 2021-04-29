@@ -50,6 +50,20 @@ public class User {
 	public void setLoggedIn(boolean isLoggedIn) {
 		this.isLoggedIn = isLoggedIn;
 	}
+	
+	public boolean logIn(String password) {
+		if(password.compareTo(this.password) == 0) {
+			isLoggedIn = true;
+			return isLoggedIn;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public void logOut() {
+		isLoggedIn = false;
+	}
 
 	@Override
 	public String toString() {

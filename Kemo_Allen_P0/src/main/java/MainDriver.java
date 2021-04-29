@@ -16,43 +16,45 @@ public class MainDriver {
 	public static void main(String[] args) {
 		ShopDAOImpl sd = new ShopDAOImpl();
 		
-		Customer cust = new Customer(0, "Test", "The", false);
+//		Customer cust = new Customer(0, "Test", "The", false);
+//		
+//		sd.insertCustomer(cust);
+//		
+//		System.out.println(sd.selectCustomerByName(cust.getUserName()));
 		
-		sd.insertCustomer(cust);
+		shopDao = new ShopDAOImpl();
+		shopService = new ShopService(shopDao);
+		shopFront = new ShopFront(shopService);
+		scan = new Scanner(System.in);
 		
-		System.out.println(sd.selectCustomerByName(cust.getUserName()));
+		boolean runApp = true;
+		boolean runMenu = true;
+		String input0;
 		
-//		shopDao = new ShopDAOImpl();
-//		shopService = new ShopService(shopDao);
-//		shopFront = new ShopFront(shopService);
-//		scan = new Scanner(System.in);
-//		
-//		boolean runApp = true;
-//		boolean runMenu = true;
-//		String input0;
-//		
-//		System.out.println("\tHello Welcome\n");
-//		
-//		do {
-//			do {
-//				runMenu = shopFront.displayMainMenu();
-//				
-//			}while(runMenu);
-//			
-//			System.out.println("Would you like to go again? (y/n)");
-//			
-//			input0 = scan.nextLine();
-//			
-//			if(input0.equalsIgnoreCase("y")) {
-//				runApp = true;
-//			}
-//			else {
-//				runApp = false;
-//			}
-//			
-//		}while(runApp);
-//		
-//		scan.close();
+		System.out.println("\tHello Welcome\n");
+		
+		//log everyone out
+		
+		do {
+			do {
+				runMenu = shopFront.displayMainMenu();
+				
+			}while(runMenu);
+			
+			System.out.println("Would you like to go again? (y/n)");
+			
+			input0 = scan.nextLine();
+			
+			if(input0.equalsIgnoreCase("y")) {
+				runApp = true;
+			}
+			else {
+				runApp = false;
+			}
+			
+		}while(runApp);
+		
+		scan.close();
 		
 	}
 

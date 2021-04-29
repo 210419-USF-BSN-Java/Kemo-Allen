@@ -38,6 +38,7 @@ public interface ShopDAO {
 	Item selectItemByName(String name);
 	Item selectItemById(int id);
 	List<Item> selectAllItems();
+	List<Item> selectUnownedItems();
 	
 	List<Inventory> selectInventoryByCustomerId(int id);
 	

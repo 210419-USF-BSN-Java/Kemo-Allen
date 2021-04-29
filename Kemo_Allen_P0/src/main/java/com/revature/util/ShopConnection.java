@@ -7,9 +7,10 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 
 public class ShopConnection {
-	private static final String URL = "jdbc:postgresql://localhost:5432/postgres"; //Might be different
-	private static final String USERNAME = "postgres";
-	private static final String PASSWORD = "abbyluna56";
+	//Run -> Run Configurations -> Java Application -> <The Application> -> Environment 
+	private static final String URL = System.getenv("jdbc_url"); 
+	private static final String USERNAME = System.getenv("jdbc_username");
+	private static final String PASSWORD = System.getenv("jdbc_password");
 	
 	private final static Logger LOG = Logger.getLogger(ShopConnection.class);
 
@@ -27,5 +28,7 @@ public class ShopConnection {
 		
 		return conn;
 	}
+	
+	
 
 }

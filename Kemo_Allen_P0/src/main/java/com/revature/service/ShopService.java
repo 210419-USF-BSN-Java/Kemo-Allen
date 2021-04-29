@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import java.util.List;
+import java.util.Scanner;
 
 import com.revature.models.Customer;
 import com.revature.models.Employee;
@@ -25,12 +26,86 @@ public class ShopService {
 		this.sDao = sDao;
 	}
 	
+	public int validInteger(Scanner scan) {
+		int input = 0;
+		
+		try {
+			input = Integer.parseInt(scan.nextLine());
+			
+		}catch(NumberFormatException e) {
+			
+		}
+		
+		return input;
+	}
+	
+	public double validDouble(Scanner scan) {
+		double input = 0;
+		
+		try {
+			input = Double.parseDouble(scan.nextLine());
+			
+		}catch(NumberFormatException e) {
+			
+		}
+		
+		return input;
+	}
+	
+	public int validPayInput(Scanner scan, Payment pay) {
+		int input = validInteger(scan);
+		
+		if(input > 0) {
+			if((pay.getNumberOfPayments() - input) < 0) {
+				input = 0;
+			}
+		}
+		
+		return input;
+	}
+	
+	public Offer constructOffer(Customer cust, Item item) {
+		return new Offer(0,cust.getId(), item.getItemId(), false);
+	 
+	}
+	
 	public boolean addCustomer(Customer cust) {
-		return sDao.insertCustomer(cust);
+		List<Customer> custList = getAllCustomers();
+		boolean isNew = true;
+		
+		//Check if a customer by the given userName exists in the DB before trying to add
+		for(Customer c: custList) {
+			if(cust.getUserName().compareTo(c.getUserName()) == 0) {
+				isNew = false;
+				break;
+			}
+		}
+		
+		if(isNew) {
+			return sDao.insertCustomer(cust);
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public boolean addEmployee(Employee emp) {
-		return sDao.insertEmployee(emp);
+		List<Employee> empList = getAllEmployees();
+		boolean isNew = true;
+		
+		for(Employee e: empList) {
+			if(emp.getUserName().compareTo(e.getUserName()) == 0) {
+				isNew = false;
+				break;
+			}
+		}
+		
+		if(isNew) {
+			return sDao.insertEmployee(emp);
+		}
+		else {
+			return false;
+		}
 	}
 	
 	public boolean addManager(Manager mana) {
@@ -38,7 +113,21 @@ public class ShopService {
 	}
 	
 	public boolean addItem(Item item) {
-		return sDao.insertItem(item);
+		List<Item> itemList = getAllItems();
+		boolean isNew = true;
+		
+		for(Item i: itemList) {
+			if(item.getName().compareTo(i.getName()) == 0) {
+				isNew = false;
+			}
+		}
+		
+		if(isNew) {
+			return sDao.insertItem(item);
+		}
+		{
+			return false;
+		}
 	}
 	
 	public boolean addInventory(Inventory inv) {
@@ -120,6 +209,12 @@ public class ShopService {
 	public List<Item> getAllItems(){
 		List<Item> itemList;
 		itemList = sDao.selectAllItems();
+		return itemList;
+	}
+	
+	public List<Item> getCustItems(){
+		List<Item> itemList;
+		itemList = sDao.selectUnownedItems();
 		return itemList;
 	}
 	
