@@ -3,18 +3,20 @@ package com.revature.models;
 public class Inventory {
 	private int inventoryId;
 	private int customerId;
-	private int itemId;
+	private String itemName;
+	private String description;
 	
 	public Inventory() {
 		super();
 		
 	}
 
-	public Inventory(int inventoryId, int customerId, int itemId) {
+	public Inventory(int inventoryId, int customerId, String itemName, String description) {
 		super();
 		this.inventoryId = inventoryId;
-		this.itemId = itemId;
 		this.customerId = customerId;
+		this.itemName = itemName;
+		this.description = description;
 	}
 
 	public int getInventoryId() {
@@ -25,14 +27,6 @@ public class Inventory {
 		this.inventoryId = inventoryId;
 	}
 
-	public int getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(int itemId) {
-		this.itemId = itemId;
-	}
-
 	public int getCustomerId() {
 		return customerId;
 	}
@@ -41,9 +35,28 @@ public class Inventory {
 		this.customerId = customerId;
 	}
 
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	@Override
 	public String toString() {
-		return "Inventory [inventoryId=" + inventoryId + ", itemId=" + itemId + ", customerId=" + customerId + "]";
+		return "Inventory [inventoryId=" + inventoryId + ", customerId=" + customerId + ", itemName=" + itemName
+				+ ", description=" + description + "]";
 	}
+	
+	
 
 }

@@ -11,6 +11,7 @@ import com.revature.models.Inventory;
 import com.revature.models.Item;
 import com.revature.models.Manager;
 import com.revature.models.Offer;
+import com.revature.models.OfferHistory;
 import com.revature.models.Payment;
 import com.revature.service.ShopService;
 
@@ -258,6 +259,7 @@ public class ShopFront {
 		
 		do {
 			System.out.println("\tHello " + customer.getUserName() + "! What would you like to do? (Enter 0 to see menu)\n");
+			viewCustomerMenu();
 			choice = scan.nextLine();
 			
 			switch(choice) {
@@ -350,7 +352,7 @@ public class ShopFront {
 		boolean uniqueOffer = true;
 		
 		do {
-		custOffers = service.getOffesrByCustomerId(cust.getId());
+		custOffers = service.getOffersByCustomerId(cust.getId());
 			
 		System.out.println("Which item would you like to make an offer for? (Item id)");
 		
@@ -473,25 +475,26 @@ public class ShopFront {
 		boolean cont = true;
 		String choice = "";
 		
-		System.out.println("\tHello " + employee.getUserName() + "! What would you like to do? \n");
-		viewEmployeeMenu();
-		
-		choice = scan.nextLine();
-		
 		do {
+			System.out.println("\tHello " + employee.getUserName() + "! What would you like to do? (Enter 0 to see menu) \n");
+			viewEmployeeMenu();
+			
+			choice = scan.nextLine();
+			
 			switch(choice) {
 			
 			case "0": viewEmployeeMenu();
 				break;
 			case "1": logOutEmployee(employee);
+						cont = false;
 				break;
 			case "2": viewShopItems();
 				break;
-			case "3": addNewItemsToShop();
+			case "3": addNewItemsToShop(employee);
 				break;
-			case "4": editExistingItem();
+			case "4": editExistingItems(employee);
 				break;
-			case "5": removeItemsFromShop();
+			case "5": removeItemsFromShop(employee);
 				break;
 			case "6": viewListOfCustomers();
 				break;
@@ -512,7 +515,7 @@ public class ShopFront {
 		System.out.println("\t Logout (1)");
 		System.out.println("\t View Shop Items (2)");
 		System.out.println("\t Add New Items to Shop (3)");
-		System.out.println("\t Edit Existing Items (4)");
+		System.out.println("\t Edit existing items (4)");
 		System.out.println("\t Remove Items from Shop (5)");
 		System.out.println("\t View a List of Customers (6)");
 		System.out.println("\t Manage Customer Offers (7)");
@@ -535,30 +538,204 @@ public class ShopFront {
 	}
 	
 	public void viewShopItems() {
+		List<Item> itemList = service.getAllItems();
+		
+		if(!itemList.isEmpty()) {
+			System.out.println("Here is a list of the items in the shop:");
+			for(Item i: itemList) {
+				System.out.println("\t" + i);
+			}
+			System.out.println();
+			
+		}
+		else {
+			System.out.println("The shop is empty at the moment.");
+		}
+	}
+	
+	public void addNewItemsToShop(Employee emp) {
+		Item item;
+		String itemName, desc;
+		double price;
+		boolean success;
+		String cont = "n";
+		
+		do {
+			System.out.println("Enter the name of the new item: ");
+			itemName = scan.nextLine();
+			
+			System.out.println("Enter a desciption for the item: ");
+			desc = scan.nextLine();
+			
+			System.out.println("Enter the price for the item (a negative number will be default to 0): ");
+			price = service.validDouble(scan);
+			
+			if(price < 0) {
+				price = 0;
+			}
+			
+			item = new Item(0, itemName, desc, price, false);
+			
+			success = service.addItem(item);
+			
+			if(success) {
+				System.out.println("The item " + item.getName() + " has been added successfully!");
+				LOG.info(emp.getUserName() + " added a new item: " + item.getName() + " to the database.");
+			}
+			else {
+				System.out.println("");
+			}
+			
+			System.out.println("Would you like to add another item? (y/n)");
+			cont = scan.nextLine();
+			
+		}while(cont.compareTo("y") == 0);
 		
 	}
 	
-	public void addNewItemsToShop() {
+	public void editExistingItems(Employee emp) {
+		Item item;
+		String choice = "n";
+		String desc;
+		double price;
+		int itemId;
+		List<Item> itemList;
 		
+		do {
+			//update for loop
+			item = null;
+			itemList = service.getAllItems();
+			if(!itemList.isEmpty()) {
+				System.out.println("Which item would you like to modify? (Item id)");
+				itemId = service.validInteger(scan);
+				
+				if(itemId > 0) {
+					for(Item i: itemList) {
+						if(i.getItemId() == itemId) {
+							item = i;
+							break;
+						}
+					}
+					
+					if(item != null) {
+						System.out.println(item);
+						System.out.println("Enter the new description (a blank line will result in no change): ");
+						desc = scan.nextLine();
+						if(desc.trim().compareTo("") != 0) {
+							item.setDescription(desc);
+							service.updateItemDescription(item);
+						}
+						
+						System.out.println("Enter the new price (a blank line will result in no change): ");
+						price = service.validDouble(scan);
+						if(price > 0) {
+							item.setPrice(price);
+							service.updateItemPrice(item);
+						}
+						
+						//Condition for no changes?
+						LOG.info(emp.getUserName() + " made an update to item by id " + item.getItemId()+ ".");
+					}
+					else {
+						System.out.println("Could not find item by id " + itemId + ".");
+					}
+					
+				}
+				else {
+					System.out.println("That was an invalid item id.");
+				}
+				
+				System.out.println("Would you like to modify another item?");
+				choice = scan.nextLine();
+			}
+			else {
+				System.out.println("There are no items in the shop.");
+				break;
+			}
+		}while(choice.compareToIgnoreCase("y") == 0);
 	}
 	
-	public void editExistingItem() {
+	public void removeItemsFromShop(Employee emp) {
+		Item item;
+		String choice = "n";
+		boolean success;
+		int itemId;
+		List<Item> itemList;
 		
-	}
-	
-	public void removeItemsFromShop() {
+		do{
+			//update for loop
+			item = null;
+			itemList = service.getAllItems();
+			if(!itemList.isEmpty()) {
+				System.out.println("Which item would you like to delete? (Item id)");
+				itemId = service.validInteger(scan);
+				
+				if(itemId > 0) {
+					for(Item i: itemList) {
+						if(i.getItemId() == itemId) {
+							item = i;
+							break;
+						}
+					}
+					
+					if(item != null) {
+						success = service.deleteItem(item.getItemId());
+						
+						if(success) {
+							System.out.println("Item by id " + item.getItemId() + " was successfully deleted.");
+							LOG.info(emp.getUserName() + " removed item by id " + item.getItemId() + " from the database.");
+						}
+						
+					}
+					else {
+						System.out.println("Could not find item by id " + itemId + ".");
+					}
+					
+				}
+				else {
+					System.out.println("That was an invalid item id.");
+				}
+				
+				System.out.println("Would you like to delete another item?");
+				choice = scan.nextLine();
+			}
+			else {
+				System.out.println("There are no items in the shop.");
+				break;
+			}
+		}while(choice.compareToIgnoreCase("y") == 0);
 		
 	}
 	
 	public void viewListOfCustomers() {
+		List<Customer> custList = service.getAllCustomers();
+		
+		if(!custList.isEmpty()) {
+			System.out.println("Here is a list of our customers: ");
+			for(Customer c: custList) {
+				System.out.println("\t" + c);
+			}
+		}
+		else {
+			System.out.println("No customers were foound.");
+		}
 		
 	}
 	
 	public void manageCustomerOffers() {
-		
+		//TODO
 	}
 	
 	public void viewListOfPayments() {
+		List<Payment> payList = service.getAllPayments();
+		
+		if(!payList.isEmpty()) {
+			//Add list for completed payments
+			System.out.println("Here are the current payments: ");
+			for(Payment p: payList) {
+				System.out.println("\t" + p);
+			}
+		}
 		
 	}
 	
@@ -566,22 +743,23 @@ public class ShopFront {
 		boolean cont = true;
 		String choice = "";
 		
-		System.out.println("\tHello " + manager.getUserName() + "! What would you like to do? \n");
-		viewMangerMenu();
-		
-		choice = scan.nextLine();
-		
 		do {
+			System.out.println("\tHello " + manager.getUserName() + "! What would you like to do? \n");
+			viewMangerMenu();
+			
+			choice = scan.nextLine();
+			
 			switch(choice) {
 			case "0": viewMangerMenu();
 				break;
 			case "1": logoutManager(manager);
+					cont = false;
 				break;
-			case "2": viewListOfEmployees();
+			case "2": viewListOfEmployees(manager);
 				break;
-			case "3": hireNewEmployee();
+			case "3": hireNewEmployee(manager);
 				break;
-			case "4": fireEmployee();
+			case "4": fireEmployee(manager);
 				break;
 			case "5": viewAllOfferHistory();
 				break;
@@ -617,19 +795,98 @@ public class ShopFront {
 		}
 	}
 	
-	public void viewListOfEmployees() {
+	public void viewListOfEmployees(Manager mana) {
+		List<Employee> empList = service.getEmployeesByManager(mana.getId());
+		
+		if(!empList.isEmpty()) {
+			System.out.println("Here is a list of employees that you supervise: ");
+			for(Employee e: empList) {
+				System.out.println("/t" + e);
+			}
+		}
 		
 	}
 	
-	public void hireNewEmployee() {
+	public void hireNewEmployee(Manager mana) {
+		Employee emp;
+		String userName, password;
+		boolean success;
+		
+		System.out.println("What is the new Employee's user name?");
+		userName = scan.nextLine();
+		
+		System.out.println("What is the new Employee's password?");
+		password = scan.nextLine();
+		
+		emp = new Employee(0, userName, password, mana.getId(), false);
+		
+		success = service.addEmployee(emp);
+		
+		if(success) {
+			System.out.println("New employee by username:" + emp.getUserName() + " has been added.");
+			LOG.info("Manager " + mana.getUserName() + " hired new employee " + emp.getUserName());
+		}
+		else {
+			System.out.println("Sorry we could not the new Employee. Maybe employee: " + emp.getUserName() + " already exists.");
+		}
 		
 	}
 	
-	public void fireEmployee() {
+	public void fireEmployee(Manager mana) {
+		int empId;
+		String choice;
+		Employee emp = null;
+		List<Employee> empList;
+		boolean success;
+		
+		System.out.println("Which employee would you like to fire? (Employee id)");
+		empId = service.validInteger(scan);
+		
+		do {
+			empList = service.getEmployeesByManager(mana.getId());
+			
+			if(empId > 0) {
+				for(Employee e: empList) {
+					if(empId == e.getId()) {
+						emp = e;
+						break;
+					}
+				}
+				
+				if(emp != null) {
+					success = service.deleteEmployee(emp.getId());
+					
+					if(success) {
+						System.out.println("Employee by id " + emp.getId() + " was removed from the database.");
+						LOG.info("Manager " + mana.getUserName() + " has fired employee " + emp.getUserName() + ".");
+					}
+				}
+				else {
+					System.out.println("Sorry we couldn't find that employee for you.");
+				}
+				
+				
+			}else {
+				System.out.println("That was an ivalid employee id.");
+			}
+			
+			System.out.println("Would you like to fire another employee?");
+			choice = scan.nextLine();
+		}while(choice.compareTo("y") == 0);
 		
 	}
 	
 	public void viewAllOfferHistory() {
+		List<OfferHistory> oHList = service.getAllOfferHistories();
+		
+		if(!oHList.isEmpty()) {
+			for(OfferHistory oH: oHList) {
+				System.out.println("/t" + oH);
+			}
+		}
+		else {
+			System.out.println("The offer history is currently empty.");
+		}
 		
 	}
 	

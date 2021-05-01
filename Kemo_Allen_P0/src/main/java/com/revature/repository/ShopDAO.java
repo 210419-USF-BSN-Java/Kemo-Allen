@@ -31,6 +31,7 @@ public interface ShopDAO {
 	Employee selectEmployeeByName(String name);
 	Employee selectEmployeeById(int id);
 	List<Employee> selectAllEmployees();
+	List<Employee> selectEmployeesByManager(Integer managerId);
 	
 	Manager selectManagerByName(String name);
 	Manager selectManagerById(int id);

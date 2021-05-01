@@ -134,13 +134,14 @@ public class ShopDAOImpl implements ShopDAO{
 	public boolean insertInventory(Inventory inv) {
 		boolean success = false;
 		
-		String sql = "INSERT INTO inventories (customer_id, item_id) VALUES (?,?)";
+		String sql = "INSERT INTO inventories (customer_id, item_name, description) VALUES (?,?,?)";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, inv.getCustomerId());
-			ps.setInt(2, inv.getItemId());
+			ps.setString(2, inv.getItemName());
+			ps.setString(3, inv.getDescription());
 			
 			ps.execute();
 			
@@ -327,6 +328,7 @@ public class ShopDAOImpl implements ShopDAO{
 				emp = new Employee(rs.getInt("user_id"),
 						rs.getString("user_name"),
 						rs.getString("pass_word"),
+						rs.getInt("manager_id"),
 						rs.getBoolean("is_logged_in"));
 			}
 			
@@ -353,6 +355,7 @@ public class ShopDAOImpl implements ShopDAO{
 				emp = new Employee(rs.getInt("user_id"),
 						rs.getString("user_name"),
 						rs.getString("pass_word"),
+						rs.getInt("manager_id"),
 						rs.getBoolean("is_logged_in"));
 			}
 			
@@ -376,11 +379,39 @@ public class ShopDAOImpl implements ShopDAO{
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next()) {
-				empList.add(
-						new Employee(rs.getInt("user_id"),
-						rs.getString("user_name"),
-						rs.getString("pass_word"),
-						rs.getBoolean("is_logged_in")));
+				empList.add( new Employee(rs.getInt("user_id"),
+								rs.getString("user_name"),
+								rs.getString("pass_word"),
+								rs.getInt("manager_id"),
+								rs.getBoolean("is_logged_in")));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.error("There was an issue when getting a list of employees.");
+		}
+		return empList;
+	}
+	
+	@Override
+	public List<Employee> selectEmployeesByManager(Integer id) {
+		List<Employee> empList = new LinkedList<Employee>();
+		
+		String sql = "SELECT * FROM employees where manager_id = ?";
+		
+		try (Connection conn = ShopConnection.getConnection()){
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				empList.add( new Employee(rs.getInt("user_id"),
+								rs.getString("user_name"),
+								rs.getString("pass_word"),
+								rs.getInt("manager_id"),
+								rs.getBoolean("is_logged_in")));
 			}
 			
 		}catch(SQLException e) {
@@ -573,7 +604,8 @@ public class ShopDAOImpl implements ShopDAO{
 			while(rs.next()) {
 				invList.add(new Inventory(rs.getInt("inventory_id"),
 						rs.getInt("customer_id"),
-						rs.getInt("item_id")));
+						rs.getString("item_name"),
+						rs.getString("description")));
 			}
 			
 		}catch(SQLException e) {

@@ -27,26 +27,26 @@ public class ShopService {
 	}
 	
 	public int validInteger(Scanner scan) {
-		int input = 0;
+		int input;
 		
 		try {
 			input = Integer.parseInt(scan.nextLine());
 			
 		}catch(NumberFormatException e) {
-			
+			input = 0;
 		}
 		
 		return input;
 	}
 	
 	public double validDouble(Scanner scan) {
-		double input = 0;
+		double input;
 		
 		try {
 			input = Double.parseDouble(scan.nextLine());
 			
 		}catch(NumberFormatException e) {
-			
+			input = 0;
 		}
 		
 		return input;
@@ -125,7 +125,7 @@ public class ShopService {
 		if(isNew) {
 			return sDao.insertItem(item);
 		}
-		{
+		else{
 			return false;
 		}
 	}
@@ -182,6 +182,12 @@ public class ShopService {
 		return empList;
 	}
 	
+	public List<Employee> getEmployeesByManager(Integer managerId){
+		List<Employee> empList;
+		empList = sDao.selectEmployeesByManager(managerId);
+		return empList;
+	}
+	
 	public Manager getManagerByName(String name) {
 		Manager manager = null;
 		manager = sDao.selectManagerByName(name);
@@ -224,7 +230,7 @@ public class ShopService {
 		return inventory;
 	}
 	
-	public List<Offer> getOffesrByCustomerId(int id) {
+	public List<Offer> getOffersByCustomerId(int id) {
 		List<Offer> offerList;
 		offerList = sDao.selectOffersByCustomerId(id);
 		return offerList;
