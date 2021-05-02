@@ -4,6 +4,8 @@ public class Offer {
 	private int offerId;
 	private int customerId;
 	private int itemId;
+	private double itemPrice;
+	private String paymentType;
 	private boolean accepted;
 	
 	public Offer() {
@@ -11,12 +13,30 @@ public class Offer {
 		
 	}
 
-	public Offer(int offerId, int customerId, int itemId, boolean accepted) {
+	public Offer(int offerId, int customerId, int itemId, double itemPrice, String paymentType, boolean accepted) {
 		super();
 		this.offerId = offerId;
 		this.customerId = customerId;
 		this.itemId = itemId;
+		this.itemPrice = itemPrice;
+		this.paymentType = paymentType;
 		this.accepted = accepted;
+	}
+
+	public double getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(double itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+
+	public String getPaymentType() {
+		return paymentType;
+	}
+
+	public void setPaymentType(String paymentType) {
+		this.paymentType = paymentType;
 	}
 
 	public int getOfferId() {
@@ -53,8 +73,10 @@ public class Offer {
 
 	@Override
 	public String toString() {
-		return "Offer [offerId=" + offerId + ", customerId=" + customerId + ", itemId=" + itemId + ", accepted="
-				+ accepted + "]";
+		return "Offer [offerId=" + offerId + ", customerId=" + customerId + ", itemId=" + itemId + ", paymentType="
+				+ paymentType + ", accepted=" + accepted + "]";
 	}
+
+	
 
 }

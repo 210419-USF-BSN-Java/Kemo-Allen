@@ -274,6 +274,12 @@ public class ShopFront {
 				break;
 			case "4": viewRemainingPayments(customer);
 				break;
+			case "5": makePayment(customer);
+				break;
+			case "6": viewCustomerOffers();
+				break;
+			case "7": manageCustomerOffers(customer);
+				break;
 			default: System.out.println("Sorry that was an invalid input.");
 				break;
 			}
@@ -288,6 +294,9 @@ public class ShopFront {
 		System.out.println("\t View My Inventory (2)");
 		System.out.println("\t View Shop Items (3)");
 		System.out.println("\t View Remaining Payments (4)");
+		System.out.println("\t Make Payment(s) (5)");
+		System.out.println("\t View Offers (6)");
+		System.out.println("\t Manage Offers (7)");
 		
 	}
 	
@@ -346,68 +355,105 @@ public class ShopFront {
 	
 	public void makeItemOffer(Customer cust, List<Item> itemList) {
 		int itemId;
-		Offer offer = null;
+		Item offerItem;
+		Offer offer;
+		String paymentType;
 		String input = "y";
 		List<Offer> custOffers;
-		boolean uniqueOffer = true;
+		boolean uniqueOffer;
 		
 		do {
-		custOffers = service.getOffersByCustomerId(cust.getId());
+			//reset default values
+			offerItem = null;
+			offer = null;
+			paymentType = null;
+			uniqueOffer = true;
 			
-		System.out.println("Which item would you like to make an offer for? (Item id)");
-		
-		itemId = service.validInteger(scan);
-		
-		if(itemId != 0) {
-			//Look for requested item
-			for(Item i: itemList) {
-				if(i.getItemId() == itemId) {
-					offer = service.constructOffer(cust, i);
-					break;
+			custOffers = service.getOffersByCustomerId(cust.getId());
+				
+			System.out.println("Which item would you like to make an offer for? (Item id)");
+			
+			itemId = service.validInteger(scan);
+			
+			if(itemId != 0) {
+				//Look for requested item
+				for(Item i: itemList) {
+					if(i.getItemId() == itemId) {
+						offerItem = i;
+						break;
+					}
 				}
-			}
-			
-			for(Offer o: custOffers) {
-				if(o.getCustomerId() == offer.getCustomerId() && o.getItemId() == offer.getItemId()) {
-					uniqueOffer = false;
-					break;
+				
+				//Select payment type
+				paymentType = selectPaymentType();
+				
+				//Create Offer
+				offer = service.constructOffer(cust, offerItem, paymentType);
+				
+				for(Offer o: custOffers) {
+					if(o.getCustomerId() == offer.getCustomerId() && o.getItemId() == offer.getItemId()) {
+						uniqueOffer = false;
+						break;
+					}
 				}
-			}
-			
-			if(offer != null && uniqueOffer) {
-				service.addOffer(offer);
-				LOG.info("An offer for item " + offer.getItemId() + " was made by user by id " + offer.getCustomerId());
+				
+				if(offer != null && uniqueOffer) {
+					service.addOffer(offer);
+					LOG.info("An offer for item " + offer.getItemId() + " was made by user by id " + offer.getCustomerId());
+				}
+				else {
+					System.out.println("An offer for item " + itemId + " could not be made.");
+				}
+				
 			}
 			else {
-				System.out.println("An offer for item " + itemId + " could not be made.");
+				System.out.println("The item id entered was invalid.");
 			}
 			
-		}
-		else {
-			System.out.println("The item id entered was invalid.");
-		}
-		
-		System.out.println("Would you like to make another offer? (y/n)");
-		input = scan.nextLine();
+			System.out.println("Would you like to make another offer? (y/n)");
+			input = scan.nextLine();
 		
 		}while(input.compareTo("y") == 0);
 		
 	}
 	
+	public String selectPaymentType() {
+		String paymentType;
+		
+		System.out.println("Which payment type would you like? ");
+		System.out.println("\t No payment plan, pay in full (0)");
+		System.out.println("\t Type 1: Four payments (1)");
+		System.out.println("\t Type 2: Six payments (2)");
+		System.out.println("\t Type 3: Eight payments (3)");
+		System.out.println("\t Type 4: Ten payments (4)");
+		
+		String input = scan.nextLine();
+		
+		switch(input) {
+			
+		case "1": paymentType = "1";
+			break;
+		case "2": paymentType = "2";
+			break;
+		case "3": paymentType = "3";
+			break;
+		case "4": paymentType = "4";
+			break;
+		default: paymentType = null;
+			break;
+		
+		}
+		
+		return paymentType;
+	}
+	
 	public void viewRemainingPayments(Customer cust) {
 		List<Payment> payList = service.getPaymentsByCustomerId(cust.getId());
-		String choice = "";
 		
 		if(!payList.isEmpty()) {
 			System.out.println("Here are your current payments:");
 			for(Payment p: payList) {
 				System.out.println("\t" + p);
-			}
-			
-			System.out.println("Would you like to make a payment? (y/n)");
-			choice = scan.nextLine();
-			if(choice.compareTo("y") == 0) {
-				makePayment(cust, payList);
 			}
 		}
 		else {
@@ -416,13 +462,16 @@ public class ShopFront {
 		
 	}
 	
-	public void makePayment(Customer cust, List<Payment> payList) {
+	public void makePayment(Customer cust) {
 		Payment pay = null;
+		List<Payment> payList;
 		int payId, numPayments;
 		boolean foundPayment;
 		String input;
 		
 		do {
+			payList = service.getPaymentsByCustomerId(cust.getId());
+			
 			System.out.println("Which payment would you like to make? (Payment id)");
 			payId = service.validInteger(scan);	
 					
@@ -453,7 +502,7 @@ public class ShopFront {
 						
 					}
 					else{
-						System.out.println("That was either an invalid number of payments or it was too great");
+						System.out.println("That was an invalid number of payments.");
 					}
 					
 				}else {
@@ -469,6 +518,14 @@ public class ShopFront {
 			input = scan.nextLine();
 			
 		}while(input.compareToIgnoreCase("y") == 0);
+	}
+	
+	public void viewCustomerOffers() {
+		//TODO
+	}
+	
+	public void manageCustomerOffers(Customer cust) {
+		//TODO
 	}
 	
 	public void displayEmployeeMenu(Employee employee) {
@@ -498,9 +555,11 @@ public class ShopFront {
 				break;
 			case "6": viewListOfCustomers();
 				break;
-			case "7": manageCustomerOffers();
+			case "7": viewListOfOffers();
 				break;
-			case "8": viewListOfPayments();
+			case "8": manageCustomerOffers(employee);
+				break;
+			case "9": viewListOfPayments();
 				break;
 			default: System.out.println("Sorry that was an invalid input.");
 				break;
@@ -518,8 +577,9 @@ public class ShopFront {
 		System.out.println("\t Edit existing items (4)");
 		System.out.println("\t Remove Items from Shop (5)");
 		System.out.println("\t View a List of Customers (6)");
-		System.out.println("\t Manage Customer Offers (7)");
-		System.out.println("\t View a List of Payments (8)");
+		System.out.println("\t View Customer Offers (7)");
+		System.out.println("\t Manage Customer Offers (8)");
+		System.out.println("\t View a List of Payments (9)");
 		
 	}
 	
@@ -555,35 +615,49 @@ public class ShopFront {
 	
 	public void addNewItemsToShop(Employee emp) {
 		Item item;
+		List<Item> itemList;
 		String itemName, desc;
 		double price;
-		boolean success;
+		boolean success, isNewItem;
 		String cont = "n";
 		
 		do {
+			isNewItem = true;
+			itemList = service.getAllItems();
+			
 			System.out.println("Enter the name of the new item: ");
 			itemName = scan.nextLine();
 			
-			System.out.println("Enter a desciption for the item: ");
-			desc = scan.nextLine();
-			
-			System.out.println("Enter the price for the item (a negative number will be default to 0): ");
-			price = service.validDouble(scan);
-			
-			if(price < 0) {
-				price = 0;
+			for(Item i: itemList) {
+				if(i.getName().compareTo(itemName) == 0) {
+					System.out.println("Item " + itemName + " is already in the shop.");
+					isNewItem = false;
+					break;
+				}
 			}
 			
-			item = new Item(0, itemName, desc, price, false);
-			
-			success = service.addItem(item);
-			
-			if(success) {
-				System.out.println("The item " + item.getName() + " has been added successfully!");
-				LOG.info(emp.getUserName() + " added a new item: " + item.getName() + " to the database.");
-			}
-			else {
-				System.out.println("");
+			if(isNewItem) {
+				System.out.println("Enter a desciption for the item: ");
+				desc = scan.nextLine();
+				
+				System.out.println("Enter the price for the item (a negative number will be default to 0): ");
+				price = service.validDouble(scan);
+				
+				if(price < 0) {
+					price = 0;
+				}
+				
+				item = new Item(0, itemName, desc, price, false);
+				
+				success = service.addItem(item);
+				
+				if(success) {
+					System.out.println("The item " + item.getName() + " has been added successfully!");
+					LOG.info(emp.getUserName() + " added a new item: " + item.getName() + " to the database.");
+				}
+				else {
+					System.out.println("");
+				}
 			}
 			
 			System.out.println("Would you like to add another item? (y/n)");
@@ -605,6 +679,7 @@ public class ShopFront {
 			//update for loop
 			item = null;
 			itemList = service.getAllItems();
+			
 			if(!itemList.isEmpty()) {
 				System.out.println("Which item would you like to modify? (Item id)");
 				itemId = service.validInteger(scan);
@@ -666,6 +741,7 @@ public class ShopFront {
 			//update for loop
 			item = null;
 			itemList = service.getAllItems();
+			
 			if(!itemList.isEmpty()) {
 				System.out.println("Which item would you like to delete? (Item id)");
 				itemId = service.validInteger(scan);
@@ -685,6 +761,8 @@ public class ShopFront {
 							System.out.println("Item by id " + item.getItemId() + " was successfully deleted.");
 							LOG.info(emp.getUserName() + " removed item by id " + item.getItemId() + " from the database.");
 						}
+						
+						//TODO remove offers for item
 						
 					}
 					else {
@@ -717,13 +795,84 @@ public class ShopFront {
 			}
 		}
 		else {
-			System.out.println("No customers were foound.");
+			System.out.println("No customers were found.");
 		}
 		
 	}
 	
-	public void manageCustomerOffers() {
-		//TODO
+	public void viewListOfOffers() {
+		List<Offer> offerList = service.getAllOffers();
+		
+		if(!offerList.isEmpty()) {
+			for(Offer o: offerList){
+				System.out.println("/t" + o);
+			}
+			
+			System.out.println("Would you like to manage any offers?");
+			
+		}
+		else {
+			System.out.println("Currently there are no unmanaged offers.");
+		}
+		
+	}
+	
+	public void manageCustomerOffers(Employee emp) {
+		String choice = "n";
+		int offerId;
+		List<Offer> offerList, itemOfferList;
+		List<OfferHistory> historyList;
+		Offer offer;
+		
+		do {
+			offer = null;
+			
+			offerList = service.getAllOffers();
+			System.out.println("Which offer would you like to accept? (Offer id)");
+			offerId = service.validInteger(scan);
+			
+			if(offerId > 0) {
+				for(Offer o: offerList) {
+					if(o.getOfferId() == offerId) {
+						offer = o;
+						break;
+					}
+				}			
+				
+				if(offer != null) {
+					//Accept offer
+					offer.setAccepted(true);
+					service.updateOfferIsAccepted(offer);
+					
+					//Construct Payment from offer
+					service.constructPayment(offer);
+					
+					//Make offer history of other offers for the same item
+					itemOfferList = service.getOffersBiItemId(offer.getItemId());
+					historyList = service.constructOfferHistory(itemOfferList);
+					
+					for(OfferHistory oH: historyList) {
+						service.addOfferHistory(oH);
+					}
+					
+					//Remove offers for the item from db
+					service.deleteItemOffers(offer.getItemId());
+						
+				}
+				else {
+					System.out.println("We could not find offer by id " + offerId + ".");
+				}
+				
+			}
+			else {
+				System.out.println("That was an invalid offer id");
+			}
+			
+			System.out.println("Would you like to accept another offer?");
+			choice = scan.nextLine();
+			
+		}while(choice.compareToIgnoreCase("y") == 0);
+		
 	}
 	
 	public void viewListOfPayments() {

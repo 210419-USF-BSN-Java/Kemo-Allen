@@ -159,13 +159,15 @@ public class ShopDAOImpl implements ShopDAO{
 	public boolean insertOffer(Offer offer) {
 		boolean success = false;
 		
-		String sql = "INSERT INTO offers (customer_id, item_id) VALUES (?,?)";
+		String sql = "INSERT INTO offers (customer_id, item_id, item_price, payment_type) VALUES (?,?,?,?)";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, offer.getCustomerId());
 			ps.setInt(2, offer.getItemId());
+			ps.setDouble(3, offer.getItemPrice());
+			ps.setString(3, offer.getPaymentType());
 			
 			ps.execute();
 			
@@ -183,15 +185,16 @@ public class ShopDAOImpl implements ShopDAO{
 	public boolean insertOfferHistory(OfferHistory oH) {
 		boolean success = false;
 		
-		String sql = "INSERT INTO inventories (customer_id, item_id, offer_id, status) VALUES (?,?,?,?)";
+		String sql = "INSERT INTO inventories (offer_id, customer_id, item_id, payment_type,status) VALUES (?,?,?,?,?)";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, oH.getCustomerId());
-			ps.setInt(2, oH.getItemId());
-			ps.setInt(3, oH.getOfferId());
-			ps.setString(4, oH.getStatus());
+			ps.setInt(1, oH.getOfferId());
+			ps.setInt(2, oH.getCustomerId());
+			ps.setInt(3, oH.getItemId());
+			ps.setString(4, oH.getPaymentType());
+			ps.setString(5, oH.getStatus());
 			
 			ps.execute();
 			
@@ -204,19 +207,24 @@ public class ShopDAOImpl implements ShopDAO{
 		
 		return success;
 	}
+	
+	@Override
+	public boolean insertOfferHistories(List<OfferHistory> historyList) {
+		return false;
+	}
 
 	@Override
 	public boolean insertPayment(Payment pay) {
 		boolean success = false;
 		
-		String sql = "INSERT INTO payments (customer_id, item_id, principle, rate, number_of_payments, payments_remaining) VALUES (?,?,?,?,?,?)";
+		String sql = "INSERT INTO payments (customer_id, item_id, item_price, rate, number_of_payments, payments_remaining) VALUES (?,?,?,?,?,?)";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, pay.getCustomerId());
 			ps.setInt(2, pay.getItemId());
-			ps.setDouble(3, pay.getPrinciple());
+			ps.setDouble(3, pay.getItemPrice());
 			ps.setDouble(4, pay.getRate());
 			ps.setInt(5, pay.getNumberOfPayments());
 			ps.setInt(6, pay.getPaymentsRemaining());
@@ -633,6 +641,8 @@ public class ShopDAOImpl implements ShopDAO{
 				 offers.add(new Offer(rs.getInt("offer_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
+						rs.getDouble("item_price"),
+						rs.getString("payment_type"),
 						rs.getBoolean("is_accepted")));
 			}
 			
@@ -660,6 +670,8 @@ public class ShopDAOImpl implements ShopDAO{
 				 offers.add(new Offer(rs.getInt("offer_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
+						rs.getDouble("item_price"),
+						rs.getString("payment_type"),
 						rs.getBoolean("is_accepted")));
 			}
 			
@@ -687,6 +699,8 @@ public class ShopDAOImpl implements ShopDAO{
 				 offers.add(new Offer(rs.getInt("offer_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
+						rs.getDouble("item_price"),
+						rs.getString("payment_type"),
 						rs.getBoolean("is_accepted")));
 			}
 			
@@ -713,9 +727,10 @@ public class ShopDAOImpl implements ShopDAO{
 			
 			while(rs.next()) {
 				oH.add(new OfferHistory(rs.getInt("history_id"),
+						rs.getInt("offer_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
-						rs.getInt("offer_id"),
+						rs.getString("payment_type"),
 						rs.getString("status")));
 			}
 			
@@ -742,9 +757,10 @@ public class ShopDAOImpl implements ShopDAO{
 			
 			while(rs.next()) {
 				oH.add(new OfferHistory(rs.getInt("history_id"),
+						rs.getInt("offer_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
-						rs.getInt("offer_id"),
+						rs.getString("payment_type"),
 						rs.getString("status")));
 			}
 			
@@ -770,9 +786,10 @@ public class ShopDAOImpl implements ShopDAO{
 			
 			while(rs.next()) {
 				oH.add(new OfferHistory(rs.getInt("history_id"),
+						rs.getInt("offer_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
-						rs.getInt("offer_id"),
+						rs.getString("payment_type"),
 						rs.getString("status")));
 			}
 			
@@ -1149,7 +1166,7 @@ public class ShopDAOImpl implements ShopDAO{
 	}
 
 	@Override
-	public boolean deleteOfferByItemId(int id) {
+	public boolean deleteOffersByItemId(int id) {
 		boolean success = false;
 		
 		String sql = "DELETE * FROM offers WHERE item_id = ?";
@@ -1172,16 +1189,16 @@ public class ShopDAOImpl implements ShopDAO{
 	}
 
 	@Override
-	public boolean deleteOfferUnaccepted(int id, boolean isAccepted) {
+	public boolean deleteCustomerOffer(int custId, int itemId) {
 		boolean success = false;
 		
-		String sql = "DELETE * FROM offers WHERE item_id = ? AND is_accepted = ?";
+		String sql = "DELETE * FROM offers WHERE customer_id = ? AND item_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, id);
-			ps.setBoolean(2, isAccepted);
+			ps.setInt(1, custId);
+			ps.setInt(2, itemId);
 			
 			ps.execute();
 			

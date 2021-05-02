@@ -21,6 +21,7 @@ public interface ShopDAO {
 	boolean insertInventory(Inventory inv);
 	boolean insertOffer(Offer offer);
 	boolean insertOfferHistory(OfferHistory oH);
+	boolean insertOfferHistories(List<OfferHistory> historyList);
 	boolean insertPayment(Payment pay);
 	
 	//Read
@@ -70,8 +71,8 @@ public interface ShopDAO {
 	boolean deleteEmployeeById(int id);
 	boolean deleteItemById(int id);
 	boolean deleteInventoryByCustomerId(int id);
-	boolean deleteOfferByItemId(int id); //When deleting an item 
-	boolean deleteOfferUnaccepted(int id, boolean isAccepted);
+	boolean deleteOffersByItemId(int id); //When deleting an item 
+	boolean deleteCustomerOffer(int custId, int itemId);
 	boolean deletePaymentByCustomerId(int id);
 
 }

@@ -4,7 +4,7 @@ public class Payment {
 	private int paymentId;
 	private int customerId;
 	private int itemId;
-	private double principle;
+	private double itemPrice;
 	private double rate;
 	private int numberOfPayments;
 	private int paymentsRemaining;
@@ -13,13 +13,13 @@ public class Payment {
 		super();
 		
 	}
-	public Payment(int paymentId, int customerId, int itemId, double principle, double rate, int numberOfPayments,
+	public Payment(int paymentId, int customerId, int itemId, double itemPrice, double rate, int numberOfPayments,
 			int paymentsRemaining) {
 		super();
 		this.paymentId = paymentId;
 		this.customerId = customerId;
 		this.itemId = itemId;
-		this.principle = principle;
+		this.itemPrice = itemPrice;
 		this.rate = rate;
 		this.numberOfPayments = numberOfPayments;
 		this.paymentsRemaining = paymentsRemaining;
@@ -43,11 +43,11 @@ public class Payment {
 	public void setItemId(int itemId) {
 		this.itemId = itemId;
 	}
-	public double getPrinciple() {
-		return principle;
+	public double getItemPrice() {
+		return itemPrice;
 	}
-	public void setPrinciple(double principle) {
-		this.principle = principle;
+	public void setItemPrice(double itemPrice) {
+		this.itemPrice = itemPrice;
 	}
 	public double getRate() {
 		return rate;
@@ -76,8 +76,8 @@ public class Payment {
 	
 	@Override
 	public String toString() {
-		return "Payment [paymentId=" + paymentId + ", customerId=" + customerId + ", itemId=" + itemId + ", principle="
-				+ principle + ", rate=" + rate + ", numberOfPayments=" + numberOfPayments + ", paymentsRemaining="
+		return "Payment [paymentId=" + paymentId + ", customerId=" + customerId + ", itemId=" + itemId + ", itemPrice="
+				+ itemPrice + ", rate=" + rate + ", numberOfPayments=" + numberOfPayments + ", paymentsRemaining="
 				+ paymentsRemaining + "]";
 	}
 	

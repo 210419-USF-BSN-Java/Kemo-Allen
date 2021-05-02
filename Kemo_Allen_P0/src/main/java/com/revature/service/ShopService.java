@@ -1,5 +1,6 @@
 package com.revature.service;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -64,9 +65,50 @@ public class ShopService {
 		return input;
 	}
 	
-	public Offer constructOffer(Customer cust, Item item) {
-		return new Offer(0,cust.getId(), item.getItemId(), false);
+	public Offer constructOffer(Customer cust, Item item, String paymentType) {
+		return new Offer(0,cust.getId(), item.getItemId(), item.getPrice(), paymentType, false);
 	 
+	}
+	
+	public Payment constructPayment(Offer offer) {
+		int payments;
+		
+		switch(offer.getPaymentType()) {
+		case "1": payments = 4;
+			break;
+		case "2": payments = 6;
+			break;
+		case "3": payments = 8;
+			break;
+		case "4": payments = 10;
+			break;
+		default: payments = 0;
+			break;
+		
+		}
+		
+		return new Payment(0, offer.getCustomerId(), offer.getItemId(), offer.getItemPrice(), 0, payments, payments);
+	}
+	
+	public List<OfferHistory> constructOfferHistory(List<Offer> offerList) {
+		List<OfferHistory> oHList = new LinkedList<>();
+		String status = "";
+		
+		if(!offerList.isEmpty()) {
+			for(Offer o: offerList) {
+				if(o.isAccepted()) {
+					status = "accepted";
+				}
+				else {
+					status = "rejected";
+				}
+				
+				oHList.add(new OfferHistory(0, o.getOfferId(), o.getCustomerId(), o.getItemId(), o.getPaymentType(), status));
+			}
+		}
+		
+		return oHList;
+		
 	}
 	
 	public boolean addCustomer(Customer cust) {
@@ -331,11 +373,11 @@ public class ShopService {
 	}
 	
 	public boolean deleteItemOffers(int id) {
-		return sDao.deleteOfferByItemId(id);
+		return sDao.deleteOffersByItemId(id);
 	}
 	
-	public boolean deleteUnacceptedItemOffers(int id, boolean isAccepted) {
-		return sDao.deleteOfferUnaccepted(id, isAccepted);
+	public boolean deleteCustomerOffer(int custId, int itemId) {
+		return sDao.deleteCustomerOffer(custId, itemId);
 	}
 	
 	public boolean deletePayment(int id) {
