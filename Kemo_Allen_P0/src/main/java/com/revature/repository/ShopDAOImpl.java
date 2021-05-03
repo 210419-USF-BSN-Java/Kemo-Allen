@@ -167,7 +167,7 @@ public class ShopDAOImpl implements ShopDAO{
 			ps.setInt(1, offer.getCustomerId());
 			ps.setInt(2, offer.getItemId());
 			ps.setDouble(3, offer.getItemPrice());
-			ps.setString(3, offer.getPaymentType());
+			ps.setString(4, offer.getPaymentType());
 			
 			ps.execute();
 			
@@ -185,7 +185,7 @@ public class ShopDAOImpl implements ShopDAO{
 	public boolean insertOfferHistory(OfferHistory oH) {
 		boolean success = false;
 		
-		String sql = "INSERT INTO inventories (offer_id, customer_id, item_id, payment_type,status) VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO offer_histories (offer_id, customer_id, item_id, payment_type,status) VALUES (?,?,?,?,?)";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
@@ -819,7 +819,7 @@ public class ShopDAOImpl implements ShopDAO{
 				pay.add(new Payment(rs.getInt("payment_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
-						rs.getDouble("principle"),
+						rs.getDouble("item_price"),
 						rs.getDouble("rate"),
 						rs.getInt("number_of_payments"),
 						rs.getInt("payments_remaining")));
@@ -849,7 +849,7 @@ public class ShopDAOImpl implements ShopDAO{
 				pay.add(new Payment(rs.getInt("payment_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
-						rs.getDouble("principle"),
+						rs.getDouble("item_price"),
 						rs.getDouble("rate"),
 						rs.getInt("number_of_payments"),
 						rs.getInt("payments_remaining")));
@@ -1146,7 +1146,7 @@ public class ShopDAOImpl implements ShopDAO{
 	public boolean deleteInventoryByCustomerId(int id) {
 		boolean success = false;
 		
-		String sql = "DELETE * FROM inventories WHERE customer_id = ?";
+		String sql = "DELETE FROM inventories WHERE customer_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
@@ -1169,7 +1169,7 @@ public class ShopDAOImpl implements ShopDAO{
 	public boolean deleteOffersByItemId(int id) {
 		boolean success = false;
 		
-		String sql = "DELETE * FROM offers WHERE item_id = ?";
+		String sql = "DELETE FROM offers WHERE item_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
@@ -1192,7 +1192,7 @@ public class ShopDAOImpl implements ShopDAO{
 	public boolean deleteCustomerOffer(int custId, int itemId) {
 		boolean success = false;
 		
-		String sql = "DELETE * FROM offers WHERE customer_id = ? AND item_id = ?";
+		String sql = "DELETE FROM offers WHERE customer_id = ? AND item_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
@@ -1216,7 +1216,7 @@ public class ShopDAOImpl implements ShopDAO{
 	public boolean deletePaymentByCustomerId(int id) {
 		boolean success = false;
 		
-		String sql = "DELETE * FROM paymenys WHERE customer_id = ?";
+		String sql = "DELETE FROM paymenys WHERE customer_id = ?";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			

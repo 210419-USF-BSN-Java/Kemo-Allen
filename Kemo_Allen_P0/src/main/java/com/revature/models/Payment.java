@@ -68,12 +68,6 @@ public class Payment {
 		this.paymentsRemaining = paymentsRemaining;
 	}
 	
-	public void makePayment(int numPayments) {
-		if(numPayments > 0) {
-			this.numberOfPayments -= numPayments;
-		}
-	}
-	
 	@Override
 	public String toString() {
 		return "Payment [paymentId=" + paymentId + ", customerId=" + customerId + ", itemId=" + itemId + ", itemPrice="

@@ -117,8 +117,8 @@ public class ShopFront {
 		boolean loginSuccess = false;
 		
 		do {
-			System.out.println("Hello customer! What is your User Name?");
-			name = scan.nextLine();
+			System.out.println("Hello customer! What is your user name?");
+			name = scan.nextLine().trim();
 			
 			cust = service.getCustomerByName(name);
 			
@@ -143,10 +143,10 @@ public class ShopFront {
 						System.out.println("Passwords didn't match. Would you like to try again? (y/n)");
 						passLoop = scan.nextLine();
 					}
-				}while(passLoop.compareTo("n") != 0);
+				}while(passLoop.compareTo("y") == 0);
 			}
 			
-		}while(nameLoop.compareTo("n") != 0);
+		}while(nameLoop.compareTo("y") == 0);
 		
 		
 		if(cust.isLoggedIn()) {
@@ -165,8 +165,8 @@ public class ShopFront {
 		boolean loginSuccess = false;
 		
 		do {
-			System.out.println("Hello employee! What is your User Name?");
-			name = scan.nextLine();
+			System.out.println("Hello employee! What is your user name?");
+			name = scan.nextLine().trim();
 			
 			emp = service.getEmployeeByName(name);
 			
@@ -191,10 +191,10 @@ public class ShopFront {
 						System.out.println("Passwords didn't match. Would you like to try again? (y/n)");
 						passLoop = scan.nextLine();
 					}
-				}while(passLoop.compareTo("n") != 0);
+				}while(passLoop.compareTo("y") == 0);
 			}
 			
-		}while(nameLoop.compareTo("n") != 0);
+		}while(nameLoop.compareTo("y") == 0);
 		
 		
 		if(emp.isLoggedIn()) {
@@ -213,8 +213,8 @@ public class ShopFront {
 		boolean loginSuccess = false;
 		
 		do {
-			System.out.println("Hello manager! What is your User Name?");
-			name = scan.nextLine();
+			System.out.println("Hello manager! What is your user name?");
+			name = scan.nextLine().trim();
 			
 			mana = service.getManagerByName(name);
 			
@@ -239,10 +239,10 @@ public class ShopFront {
 						System.out.println("Passwords didn't match. Would you like to try again? (y/n)");
 						passLoop = scan.nextLine();
 					}
-				}while(passLoop.compareTo("n") != 0);
+				}while(passLoop.compareTo("y") == 0);
 			}
 			
-		}while(nameLoop.compareTo("n") != 0);
+		}while(nameLoop.compareTo("y") == 0);
 		
 		
 		if(mana.isLoggedIn()) {
@@ -276,9 +276,9 @@ public class ShopFront {
 				break;
 			case "5": makePayment(customer);
 				break;
-			case "6": viewCustomerOffers();
+			case "6": viewMyOffers(customer);
 				break;
-			case "7": manageCustomerOffers(customer);
+			case "7": manageMyOffers(customer);
 				break;
 			default: System.out.println("Sorry that was an invalid input.");
 				break;
@@ -321,7 +321,7 @@ public class ShopFront {
 		if(!invList.isEmpty()) {
 			System.out.println("Here is a list of items in your inventory:");
 			for(Inventory i: invList) {
-				System.out.println(i);
+				System.out.println("\t" + i);
 			}
 		}
 		else {
@@ -439,7 +439,7 @@ public class ShopFront {
 			break;
 		case "4": paymentType = "4";
 			break;
-		default: paymentType = null;
+		default: paymentType = "0";
 			break;
 		
 		}
@@ -463,37 +463,35 @@ public class ShopFront {
 	}
 	
 	public void makePayment(Customer cust) {
-		Payment pay = null;
+		Payment pay;
 		List<Payment> payList;
 		int payId, numPayments;
-		boolean foundPayment;
 		String input;
 		
 		do {
+			pay = null;
 			payList = service.getPaymentsByCustomerId(cust.getId());
 			
 			System.out.println("Which payment would you like to make? (Payment id)");
 			payId = service.validInteger(scan);	
 					
 			if(payId != 0) {
-				foundPayment = false;
 				
 				for(Payment p: payList) {
 					if(payId == p.getPaymentId()) {
-						foundPayment = true;
 						pay = p;
 						break;
 					}
 				}
 				
-				if(foundPayment) {
+				if(pay != null) {
 					System.out.println(pay);
 					System.out.println("How many payments would you like to make on payment " + pay.getPaymentId() + "?");
 					numPayments = service.validPayInput(scan, pay);
 					
 					if(numPayments > 0) {
-						System.out.println("You made " + numPayments + " on payment " + pay.getPaymentId() + ".");
-						pay.makePayment(numPayments);
+						System.out.println("You made " + numPayments + " payments on payment " + pay.getPaymentId() + ".");
+						pay.setPaymentsRemaining(pay.getPaymentsRemaining() - numPayments);
 						service.updateRemainingPayments(pay);
 						LOG.info("Customer " + cust.getId() + " made a payment.");
 						//Update the customer payments
@@ -520,12 +518,64 @@ public class ShopFront {
 		}while(input.compareToIgnoreCase("y") == 0);
 	}
 	
-	public void viewCustomerOffers() {
-		//TODO
+	public void viewMyOffers(Customer cust) {
+		List<Offer> myOffers = service.getOffersByCustomerId(cust.getId());
+		
+		if(!myOffers.isEmpty()) {
+			System.out.println("Here is a list of your current offers:");
+			for(Offer o: myOffers) {
+				System.out.println("\t" + o);
+			}
+		}
+		else {
+			System.out.println("You don't currently have any pending offers.");
+		}
+		
 	}
 	
-	public void manageCustomerOffers(Customer cust) {
-		//TODO
+	public void manageMyOffers(Customer cust) {
+		String choice = "n";
+		List<Offer> myOffers ;
+		Offer offer;
+		int offerId;
+		boolean success;
+		
+		do {
+			myOffers = service.getOffersByCustomerId(cust.getId());
+			offer = null;
+			
+			System.out.println("Which offer would you like to retract? (Offer id)");
+			offerId = service.validInteger(scan);
+			
+			if(offerId > 0) {
+				for(Offer o: myOffers) {
+					if(o.getItemId() == offerId) {
+						offer = o;
+						break;
+					}
+				}
+				
+				if(offer != null) {
+					success = service.deleteCustomerOffer(offer.getCustomerId(), offer.getItemId());
+					if(success) {
+						System.out.println("Offer by id " + offer.getOfferId() +" was successfully deleted.");
+						LOG.info("Customer by id " + cust.getId() + " removed their offer by id " + offer.getOfferId() + ".");
+					}
+					
+				}
+				else {
+					System.out.println("Sorry that offer is not in our system.");
+				}
+				
+			}
+			else {
+				System.out.println("That was an invalid offer id.");
+			}
+			
+			System.out.println("Would you like to retract another offer? (y/n)");
+			choice = scan.nextLine();
+			
+		}while(choice.compareTo("y") == 0);
 	}
 	
 	public void displayEmployeeMenu(Employee employee) {
@@ -762,7 +812,8 @@ public class ShopFront {
 							LOG.info(emp.getUserName() + " removed item by id " + item.getItemId() + " from the database.");
 						}
 						
-						//TODO remove offers for item
+						//remove offers for item
+						service.deleteItemOffers(item.getItemId());
 						
 					}
 					else {
@@ -805,10 +856,8 @@ public class ShopFront {
 		
 		if(!offerList.isEmpty()) {
 			for(Offer o: offerList){
-				System.out.println("/t" + o);
+				System.out.println("\t" + o);
 			}
-			
-			System.out.println("Would you like to manage any offers?");
 			
 		}
 		else {
@@ -823,9 +872,15 @@ public class ShopFront {
 		List<Offer> offerList, itemOfferList;
 		List<OfferHistory> historyList;
 		Offer offer;
+		Item item;
+		Inventory inv;
+		Payment pay;
 		
 		do {
 			offer = null;
+			item = null;
+			inv = null;
+			pay = null;
 			
 			offerList = service.getAllOffers();
 			System.out.println("Which offer would you like to accept? (Offer id)");
@@ -844,12 +899,24 @@ public class ShopFront {
 					offer.setAccepted(true);
 					service.updateOfferIsAccepted(offer);
 					
+					//Get item from db
+					item = service.getItemById(offer.getItemId());
+					item.setOwned(true);
+					service.updateItemIsOwned(item);
+					
 					//Construct Payment from offer
-					service.constructPayment(offer);
+					pay = service.constructPayment(offer);
+					service.addPayment(pay);
+					
+					//Construct Inventory for offer customer
+					inv = service.constructInventory(offer.getCustomerId(), item);
+					service.addInventory(inv);
 					
 					//Make offer history of other offers for the same item
-					itemOfferList = service.getOffersBiItemId(offer.getItemId());
+					itemOfferList = service.getOffersByItemId(offer.getItemId());
+					System.out.println(itemOfferList);
 					historyList = service.constructOfferHistory(itemOfferList);
+					System.out.println(historyList);
 					
 					for(OfferHistory oH: historyList) {
 						service.addOfferHistory(oH);
@@ -953,6 +1020,9 @@ public class ShopFront {
 				System.out.println("/t" + e);
 			}
 		}
+		else {
+			System.out.println("You are not currently supervising any employees.");
+		}
 		
 	}
 	
@@ -1030,7 +1100,7 @@ public class ShopFront {
 		
 		if(!oHList.isEmpty()) {
 			for(OfferHistory oH: oHList) {
-				System.out.println("/t" + oH);
+				System.out.println("\t" + oH);
 			}
 		}
 		else {
@@ -1038,6 +1108,5 @@ public class ShopFront {
 		}
 		
 	}
-	
 
 }

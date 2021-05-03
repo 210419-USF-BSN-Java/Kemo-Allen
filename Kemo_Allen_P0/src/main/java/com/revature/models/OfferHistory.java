@@ -13,10 +13,10 @@ public class OfferHistory {
 		
 	}
 
-	public OfferHistory( int offerId, int historyId, int customerId, int itemId, String paymentType, String status) {
+	public OfferHistory(int historyId, int offerId, int customerId, int itemId, String paymentType, String status) {
 		super();
-		this.offerId = offerId;
 		this.historyId = historyId;
+		this.offerId = offerId;
 		this.customerId = customerId;
 		this.itemId = itemId;
 		this.paymentType = paymentType;
@@ -73,9 +73,8 @@ public class OfferHistory {
 
 	@Override
 	public String toString() {
-		return "OfferHistory [historyId=" + historyId + ", customerId=" + customerId + ", itemId=" + itemId
-				+ ", offerId=" + offerId + ", paymentType=" + paymentType + ", status=" + status + "]";
+		return "OfferHistory [offerId=" + offerId + ", historyId=" + historyId + ", customerId=" + customerId
+				+ ", itemId=" + itemId + ", paymentType=" + paymentType + ", status=" + status + "]";
 	}
-
 
 }

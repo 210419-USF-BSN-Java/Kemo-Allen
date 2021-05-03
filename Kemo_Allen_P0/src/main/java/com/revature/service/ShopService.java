@@ -57,7 +57,7 @@ public class ShopService {
 		int input = validInteger(scan);
 		
 		if(input > 0) {
-			if((pay.getNumberOfPayments() - input) < 0) {
+			if((pay.getPaymentsRemaining() - input) < 0) {
 				input = 0;
 			}
 		}
@@ -72,6 +72,10 @@ public class ShopService {
 	
 	public Payment constructPayment(Offer offer) {
 		int payments;
+		
+		if(offer.getPaymentType() == null) {
+			offer.setPaymentType("0");
+		}
 		
 		switch(offer.getPaymentType()) {
 		case "1": payments = 4;
@@ -88,6 +92,10 @@ public class ShopService {
 		}
 		
 		return new Payment(0, offer.getCustomerId(), offer.getItemId(), offer.getItemPrice(), 0, payments, payments);
+	}
+	
+	public Inventory constructInventory(int customerId, Item item) {
+		return new Inventory(0, customerId, item.getName(), item.getDescription());
 	}
 	
 	public List<OfferHistory> constructOfferHistory(List<Offer> offerList) {
@@ -278,7 +286,7 @@ public class ShopService {
 		return offerList;
 	}
 	
-	public List<Offer> getOffersBiItemId(int id){
+	public List<Offer> getOffersByItemId(int id){
 		List<Offer> offerList;
 		offerList = sDao.selectOffersByItemId(id);
 		return offerList;

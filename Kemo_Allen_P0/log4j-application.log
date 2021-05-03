@@ -362,3 +362,55 @@
 2021-04-30 13:18:40 INFO  ShopFront:685 - Kemo removed item by id 3 from the database.
 2021-04-30 13:19:17 INFO  ShopFront:636 - Kemo made an update to item by id 2.
 2021-04-30 13:19:45 INFO  ShopFront:532 - Employee Kemo has logged out.
+2021-05-03 00:22:46 INFO  ShopFront:104 - New customer Test was added.
+2021-05-03 00:23:12 INFO  ShopFront:104 - New customer Tester was added.
+2021-05-03 00:23:19 INFO  ShopFront:140 - Customer Test has signed in.
+2021-05-03 00:23:59 ERROR ShopDAOImpl:178 - There was an issue when adding an offer.
+2021-05-03 00:23:59 INFO  ShopFront:402 - An offer for item 1 was made by user by id 1
+2021-05-03 00:25:17 INFO  ShopFront:140 - Customer Test has signed in.
+2021-05-03 00:25:35 INFO  ShopFront:402 - An offer for item 1 was made by user by id 1
+2021-05-03 00:27:35 INFO  ShopFront:310 - Customer Test has logged out.
+2021-05-03 00:27:49 INFO  ShopFront:188 - Employee Kemo has signed in.
+2021-05-03 00:28:12 INFO  ShopFront:708 - Kemo added a new item: Flametongue to the database.
+2021-05-03 00:29:03 INFO  ShopFront:764 - Kemo made an update to item by id 2.
+2021-05-03 00:30:18 INFO  ShopFront:708 - Kemo added a new item: Tyrfing to the database.
+2021-05-03 00:31:26 ERROR ShopDAOImpl:205 - There was an issue when adding an offer history.
+2021-05-03 00:31:26 ERROR ShopDAOImpl:1185 - There was an issue when deleting offers
+2021-05-03 00:34:32 ERROR ShopDAOImpl:860 - There was an issue when getting payments.
+2021-05-03 00:39:59 INFO  ShopFront:645 - Employee Kemo has logged out.
+2021-05-03 00:40:16 INFO  ShopFront:140 - Customer Test has signed in.
+2021-05-03 00:40:52 INFO  ShopFront:498 - Customer 1 made a payment.
+2021-05-03 00:46:44 INFO  ShopFront:310 - Customer Test has logged out.
+2021-05-03 00:47:06 INFO  ShopFront:140 - Customer Test has signed in.
+2021-05-03 00:47:31 INFO  ShopFront:496 - Customer 1 made a payment.
+2021-05-03 00:48:05 INFO  ShopFront:310 - Customer Test has logged out.
+2021-05-03 00:48:18 INFO  ShopFront:140 - Customer Tester has signed in.
+2021-05-03 00:49:58 INFO  ShopFront:402 - An offer for item 2 was made by user by id 2
+2021-05-03 00:50:10 INFO  ShopFront:310 - Customer Tester has logged out.
+2021-05-03 00:50:24 INFO  ShopFront:140 - Customer Test has signed in.
+2021-05-03 00:50:39 INFO  ShopFront:402 - An offer for item 2 was made by user by id 1
+2021-05-03 00:50:43 INFO  ShopFront:310 - Customer Test has logged out.
+2021-05-03 00:50:50 INFO  ShopFront:188 - Employee Kemo has signed in.
+2021-05-03 00:51:17 ERROR ShopDAOImpl:205 - There was an issue when adding an offer history.
+2021-05-03 00:51:17 ERROR ShopDAOImpl:205 - There was an issue when adding an offer history.
+2021-05-03 00:53:59 ERROR ShopDAOImpl:1139 - There was an issue when deleting an item.
+2021-05-03 00:54:50 INFO  ShopFront:643 - Employee Kemo has logged out.
+2021-05-03 00:55:15 INFO  ShopFront:140 - Customer Tester has signed in.
+2021-05-03 00:56:00 INFO  ShopFront:402 - An offer for item 3 was made by user by id 2
+2021-05-03 00:56:53 INFO  ShopFront:310 - Customer Tester has logged out.
+2021-05-03 00:57:01 INFO  ShopFront:188 - Employee Kemo has signed in.
+2021-05-03 01:00:28 INFO  ShopFront:188 - Employee Kemo has signed in.
+2021-05-03 01:01:21 INFO  ShopFront:643 - Employee Kemo has logged out.
+2021-05-03 01:01:32 INFO  ShopFront:236 - Manager Kevin has signed in.
+2021-05-03 01:03:24 INFO  ShopFront:1005 - Manager Kevin has logged out.
+2021-05-03 01:05:28 INFO  ShopFront:140 - Customer Tester has signed in.
+2021-05-03 01:05:56 INFO  ShopFront:402 - An offer for item 1 was made by user by id 2
+2021-05-03 01:06:04 INFO  ShopFront:310 - Customer Tester has logged out.
+2021-05-03 01:06:09 INFO  ShopFront:188 - Employee Kemo has signed in.
+2021-05-03 01:06:43 ERROR ShopDAOImpl:205 - There was an issue when adding an offer history.
+2021-05-03 01:10:22 INFO  ShopFront:140 - Customer Test has signed in.
+2021-05-03 01:10:43 INFO  ShopFront:402 - An offer for item 2 was made by user by id 1
+2021-05-03 01:10:49 INFO  ShopFront:310 - Customer Test has logged out.
+2021-05-03 01:11:05 INFO  ShopFront:188 - Employee Kemo has signed in.
+2021-05-03 01:11:26 ERROR ShopDAOImpl:1185 - There was an issue when deleting offers
+2021-05-03 01:13:08 INFO  ShopFront:643 - Employee Kemo has logged out.
