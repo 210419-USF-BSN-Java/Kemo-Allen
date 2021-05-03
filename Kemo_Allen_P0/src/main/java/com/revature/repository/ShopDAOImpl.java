@@ -185,16 +185,15 @@ public class ShopDAOImpl implements ShopDAO{
 	public boolean insertOfferHistory(OfferHistory oH) {
 		boolean success = false;
 		
-		String sql = "INSERT INTO offer_histories (offer_id, customer_id, item_id, payment_type,status) VALUES (?,?,?,?,?)";
+		String sql = "INSERT INTO offer_histories (customer_id, item_id, payment_type,status) VALUES (?,?,?,?)";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, oH.getOfferId());
-			ps.setInt(2, oH.getCustomerId());
-			ps.setInt(3, oH.getItemId());
-			ps.setString(4, oH.getPaymentType());
-			ps.setString(5, oH.getStatus());
+			ps.setInt(1, oH.getCustomerId());
+			ps.setInt(2, oH.getItemId());
+			ps.setString(3, oH.getPaymentType());
+			ps.setString(4, oH.getStatus());
 			
 			ps.execute();
 			
@@ -727,7 +726,6 @@ public class ShopDAOImpl implements ShopDAO{
 			
 			while(rs.next()) {
 				oH.add(new OfferHistory(rs.getInt("history_id"),
-						rs.getInt("offer_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
 						rs.getString("payment_type"),
@@ -757,7 +755,6 @@ public class ShopDAOImpl implements ShopDAO{
 			
 			while(rs.next()) {
 				oH.add(new OfferHistory(rs.getInt("history_id"),
-						rs.getInt("offer_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
 						rs.getString("payment_type"),
@@ -786,7 +783,6 @@ public class ShopDAOImpl implements ShopDAO{
 			
 			while(rs.next()) {
 				oH.add(new OfferHistory(rs.getInt("history_id"),
-						rs.getInt("offer_id"),
 						rs.getInt("customer_id"),
 						rs.getInt("item_id"),
 						rs.getString("payment_type"),

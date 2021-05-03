@@ -1,7 +1,6 @@
 package com.revature.models;
 
 public class OfferHistory {
-	private int offerId;
 	private int historyId;
 	private int customerId;
 	private int itemId;
@@ -13,10 +12,9 @@ public class OfferHistory {
 		
 	}
 
-	public OfferHistory(int historyId, int offerId, int customerId, int itemId, String paymentType, String status) {
+	public OfferHistory(int historyId, int customerId, int itemId, String paymentType, String status) {
 		super();
 		this.historyId = historyId;
-		this.offerId = offerId;
 		this.customerId = customerId;
 		this.itemId = itemId;
 		this.paymentType = paymentType;
@@ -37,14 +35,6 @@ public class OfferHistory {
 
 	public void setPaymentType(String paymentType) {
 		this.paymentType = paymentType;
-	}
-
-	public int getOfferId() {
-		return offerId;
-	}
-
-	public void setOfferId(int offerId) {
-		this.offerId = offerId;
 	}
 
 	public int getCustomerId() {
@@ -73,7 +63,7 @@ public class OfferHistory {
 
 	@Override
 	public String toString() {
-		return "OfferHistory [offerId=" + offerId + ", historyId=" + historyId + ", customerId=" + customerId
+		return "OfferHistory [historyId=" + historyId + ", customerId=" + customerId
 				+ ", itemId=" + itemId + ", paymentType=" + paymentType + ", status=" + status + "]";
 	}
 

@@ -27,42 +27,42 @@ public class ShopService {
 		this.sDao = sDao;
 	}
 	
-	public int validInteger(Scanner scan) {
-		int input;
+	public int validInteger(String input) {
+		int value;
 		
 		try {
-			input = Integer.parseInt(scan.nextLine());
+			value = Integer.parseInt(input);
 			
 		}catch(NumberFormatException e) {
-			input = 0;
+			value = 0;
 		}
 		
-		return input;
+		return value;
 	}
 	
-	public double validDouble(Scanner scan) {
-		double input;
+	public double validDouble(String input) {
+		double value;
 		
 		try {
-			input = Double.parseDouble(scan.nextLine());
+			value = Double.parseDouble(input);
 			
 		}catch(NumberFormatException e) {
-			input = 0;
+			value = 0;
 		}
 		
-		return input;
+		return value;
 	}
 	
-	public int validPayInput(Scanner scan, Payment pay) {
-		int input = validInteger(scan);
+	public int validPayInput(String input, Payment pay) {
+		int value = validInteger(input);
 		
-		if(input > 0) {
-			if((pay.getPaymentsRemaining() - input) < 0) {
-				input = 0;
+		if(value > 0) {
+			if((pay.getPaymentsRemaining() - value) < 0) {
+				value = 0;
 			}
 		}
 		
-		return input;
+		return value;
 	}
 	
 	public Offer constructOffer(Customer cust, Item item, String paymentType) {
@@ -111,7 +111,7 @@ public class ShopService {
 					status = "rejected";
 				}
 				
-				oHList.add(new OfferHistory(0, o.getOfferId(), o.getCustomerId(), o.getItemId(), o.getPaymentType(), status));
+				oHList.add(new OfferHistory(0, o.getCustomerId(), o.getItemId(), o.getPaymentType(), status));
 			}
 		}
 		

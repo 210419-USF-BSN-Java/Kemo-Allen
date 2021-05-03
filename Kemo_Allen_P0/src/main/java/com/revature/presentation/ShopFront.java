@@ -358,7 +358,7 @@ public class ShopFront {
 		Item offerItem;
 		Offer offer;
 		String paymentType;
-		String input = "y";
+		String loop, input;
 		List<Offer> custOffers;
 		boolean uniqueOffer;
 		
@@ -373,7 +373,8 @@ public class ShopFront {
 				
 			System.out.println("Which item would you like to make an offer for? (Item id)");
 			
-			itemId = service.validInteger(scan);
+			input = scan.nextLine();
+			itemId = service.validInteger(input);
 			
 			if(itemId != 0) {
 				//Look for requested item
@@ -411,9 +412,9 @@ public class ShopFront {
 			}
 			
 			System.out.println("Would you like to make another offer? (y/n)");
-			input = scan.nextLine();
+			loop = scan.nextLine();
 		
-		}while(input.compareTo("y") == 0);
+		}while(loop.compareTo("y") == 0);
 		
 	}
 	
@@ -466,14 +467,15 @@ public class ShopFront {
 		Payment pay;
 		List<Payment> payList;
 		int payId, numPayments;
-		String input;
+		String loop, input;
 		
 		do {
 			pay = null;
 			payList = service.getPaymentsByCustomerId(cust.getId());
 			
 			System.out.println("Which payment would you like to make? (Payment id)");
-			payId = service.validInteger(scan);	
+			input = scan.nextLine();
+			payId = service.validInteger(input);	
 					
 			if(payId != 0) {
 				
@@ -487,7 +489,8 @@ public class ShopFront {
 				if(pay != null) {
 					System.out.println(pay);
 					System.out.println("How many payments would you like to make on payment " + pay.getPaymentId() + "?");
-					numPayments = service.validPayInput(scan, pay);
+					input = scan.nextLine();
+					numPayments = service.validPayInput(input, pay);
 					
 					if(numPayments > 0) {
 						System.out.println("You made " + numPayments + " payments on payment " + pay.getPaymentId() + ".");
@@ -513,9 +516,9 @@ public class ShopFront {
 			}
 			
 			System.out.println("Would you like to make another payment? (y/n)");
-			input = scan.nextLine();
+			loop = scan.nextLine();
 			
-		}while(input.compareToIgnoreCase("y") == 0);
+		}while(loop.compareToIgnoreCase("y") == 0);
 	}
 	
 	public void viewMyOffers(Customer cust) {
@@ -534,7 +537,7 @@ public class ShopFront {
 	}
 	
 	public void manageMyOffers(Customer cust) {
-		String choice = "n";
+		String loop, input;
 		List<Offer> myOffers ;
 		Offer offer;
 		int offerId;
@@ -545,7 +548,8 @@ public class ShopFront {
 			offer = null;
 			
 			System.out.println("Which offer would you like to retract? (Offer id)");
-			offerId = service.validInteger(scan);
+			input = scan.nextLine();
+			offerId = service.validInteger(input);
 			
 			if(offerId > 0) {
 				for(Offer o: myOffers) {
@@ -573,9 +577,9 @@ public class ShopFront {
 			}
 			
 			System.out.println("Would you like to retract another offer? (y/n)");
-			choice = scan.nextLine();
+			loop = scan.nextLine();
 			
-		}while(choice.compareTo("y") == 0);
+		}while(loop.compareTo("y") == 0);
 	}
 	
 	public void displayEmployeeMenu(Employee employee) {
@@ -669,7 +673,7 @@ public class ShopFront {
 		String itemName, desc;
 		double price;
 		boolean success, isNewItem;
-		String cont = "n";
+		String loop, input;
 		
 		do {
 			isNewItem = true;
@@ -691,7 +695,8 @@ public class ShopFront {
 				desc = scan.nextLine();
 				
 				System.out.println("Enter the price for the item (a negative number will be default to 0): ");
-				price = service.validDouble(scan);
+				input = scan.nextLine();
+				price = service.validDouble(input);
 				
 				if(price < 0) {
 					price = 0;
@@ -711,15 +716,15 @@ public class ShopFront {
 			}
 			
 			System.out.println("Would you like to add another item? (y/n)");
-			cont = scan.nextLine();
+			loop = scan.nextLine();
 			
-		}while(cont.compareTo("y") == 0);
+		}while(loop.compareTo("y") == 0);
 		
 	}
 	
 	public void editExistingItems(Employee emp) {
 		Item item;
-		String choice = "n";
+		String loop, input;
 		String desc;
 		double price;
 		int itemId;
@@ -732,7 +737,8 @@ public class ShopFront {
 			
 			if(!itemList.isEmpty()) {
 				System.out.println("Which item would you like to modify? (Item id)");
-				itemId = service.validInteger(scan);
+				input = scan.nextLine();
+				itemId = service.validInteger(input);
 				
 				if(itemId > 0) {
 					for(Item i: itemList) {
@@ -752,7 +758,8 @@ public class ShopFront {
 						}
 						
 						System.out.println("Enter the new price (a blank line will result in no change): ");
-						price = service.validDouble(scan);
+						input = scan.nextLine();
+						price = service.validDouble(input);
 						if(price > 0) {
 							item.setPrice(price);
 							service.updateItemPrice(item);
@@ -771,18 +778,18 @@ public class ShopFront {
 				}
 				
 				System.out.println("Would you like to modify another item?");
-				choice = scan.nextLine();
+				loop = scan.nextLine();
 			}
 			else {
 				System.out.println("There are no items in the shop.");
 				break;
 			}
-		}while(choice.compareToIgnoreCase("y") == 0);
+		}while(loop.compareToIgnoreCase("y") == 0);
 	}
 	
 	public void removeItemsFromShop(Employee emp) {
 		Item item;
-		String choice = "n";
+		String loop, input;
 		boolean success;
 		int itemId;
 		List<Item> itemList;
@@ -794,7 +801,8 @@ public class ShopFront {
 			
 			if(!itemList.isEmpty()) {
 				System.out.println("Which item would you like to delete? (Item id)");
-				itemId = service.validInteger(scan);
+				input = scan.nextLine();
+				itemId = service.validInteger(input);
 				
 				if(itemId > 0) {
 					for(Item i: itemList) {
@@ -826,13 +834,13 @@ public class ShopFront {
 				}
 				
 				System.out.println("Would you like to delete another item?");
-				choice = scan.nextLine();
+				loop = scan.nextLine();
 			}
 			else {
 				System.out.println("There are no items in the shop.");
 				break;
 			}
-		}while(choice.compareToIgnoreCase("y") == 0);
+		}while(loop.compareToIgnoreCase("y") == 0);
 		
 	}
 	
@@ -867,7 +875,7 @@ public class ShopFront {
 	}
 	
 	public void manageCustomerOffers(Employee emp) {
-		String choice = "n";
+		String loop, input;
 		int offerId;
 		List<Offer> offerList, itemOfferList;
 		List<OfferHistory> historyList;
@@ -884,7 +892,8 @@ public class ShopFront {
 			
 			offerList = service.getAllOffers();
 			System.out.println("Which offer would you like to accept? (Offer id)");
-			offerId = service.validInteger(scan);
+			input = scan.nextLine();
+			offerId = service.validInteger(input);
 			
 			if(offerId > 0) {
 				for(Offer o: offerList) {
@@ -936,9 +945,9 @@ public class ShopFront {
 			}
 			
 			System.out.println("Would you like to accept another offer?");
-			choice = scan.nextLine();
+			loop = scan.nextLine();
 			
-		}while(choice.compareToIgnoreCase("y") == 0);
+		}while(loop.compareToIgnoreCase("y") == 0);
 		
 	}
 	
@@ -1053,13 +1062,14 @@ public class ShopFront {
 	
 	public void fireEmployee(Manager mana) {
 		int empId;
-		String choice;
+		String loop, input;
 		Employee emp = null;
 		List<Employee> empList;
 		boolean success;
 		
 		System.out.println("Which employee would you like to fire? (Employee id)");
-		empId = service.validInteger(scan);
+		input = scan.nextLine();
+		empId = service.validInteger(input);
 		
 		do {
 			empList = service.getEmployeesByManager(mana.getId());
@@ -1090,8 +1100,8 @@ public class ShopFront {
 			}
 			
 			System.out.println("Would you like to fire another employee?");
-			choice = scan.nextLine();
-		}while(choice.compareTo("y") == 0);
+			loop = scan.nextLine();
+		}while(loop.compareTo("y") == 0);
 		
 	}
 	
