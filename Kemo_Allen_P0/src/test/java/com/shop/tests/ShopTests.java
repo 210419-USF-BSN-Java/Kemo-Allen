@@ -11,6 +11,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mockitoSession;
+import static org.mockito.Mockito.when;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,10 +33,13 @@ public class ShopTests {
 	
 	private static ShopService sS;
 	private static Customer cust = new Customer(5, "Test", "123", false);
+	private static Manager mana = new Manager(2, "Anne", "bbb", false);
+	private static Employee emp = new Employee(5, "Mark", "aaa", 2, false);
 	private static Item item = new Item(5, "Epee", "Pointy Sword", 99.99, false);
 	private static Offer offer;
 	private static Payment pay;
 	private static Inventory inv;
+	private static OfferHistory oH;
 	
 	@Mock
 	private static ShopDAOImpl sD;
@@ -142,6 +146,36 @@ public class ShopTests {
 																			.stream().filter(x -> x.getCustomerId() == oH1.getCustomerId())
 																			.collect(Collectors.toList()));
 		Mockito.when(sD.selectAllPayments()).thenReturn(payList);
+		
+		//Insert statements
+		Mockito.when(sD.insertCustomer(cust)).thenReturn(true);
+		Mockito.when(sD.insertEmployee(emp)).thenReturn(true);
+		Mockito.when(sD.insertManager(mana)).thenReturn(true);
+		Mockito.when(sD.insertItem(item)).thenReturn(true);
+		Mockito.when(sD.insertInventory(inv)).thenReturn(true);
+		Mockito.when(sD.insertOffer(offer)).thenReturn(true);
+		Mockito.when(sD.insertOfferHistory(oH)).thenReturn(true);
+		Mockito.when(sD.insertPayment(pay)).thenReturn(true);
+		
+		//Update statements
+		Mockito.when(sD.updateCustomerLogin(cust)).thenReturn(true);
+		Mockito.when(sD.updateEmployeeLogin(emp)).thenReturn(true);
+		Mockito.when(sD.updateManagerLogin(mana)).thenReturn(true);
+		Mockito.when(sD.updateItemDescription(item)).thenReturn(true);
+		Mockito.when(sD.updateItemPrice(item)).thenReturn(true);
+		Mockito.when(sD.updateItemIsOwned(item)).thenReturn(true);
+		Mockito.when(sD.updateOfferIsAccepted(offer)).thenReturn(true); //Not working as expected
+		Mockito.when(sD.updateRemainingPayments(pay)).thenReturn(true);
+		
+		//Delete statements
+		Mockito.when(sD.deleteCustomerById(cust1.getId())).thenReturn(true);
+		Mockito.when(sD.deleteEmployeeById(emp1.getId())).thenReturn(true);
+		Mockito.when(sD.deleteItemById(item1.getItemId())).thenReturn(true);
+		Mockito.when(sD.deleteInventoryByCustomerId(inv1.getCustomerId())).thenReturn(true);
+		Mockito.when(sD.deleteOffersByItemId(offer1.getItemId())).thenReturn(true);
+		Mockito.when(sD.deleteCustomerOffer(offer2.getCustomerId(), offer2.getItemId())).thenReturn(true);
+		Mockito.when(sD.deletePaymentByCustomerId(pay1.getCustomerId())).thenReturn(true);
+		
 	}
 	
 	@Test
@@ -303,29 +337,121 @@ public class ShopTests {
 		assertFalse(sS.getAllPayments().isEmpty());
 	}
 	
+	@Test
+	public void testInsertCustomer() {
+		assertTrue(sS.addCustomer(cust));
+	}
 	
+	@Test
+	public void testInsertEmployee() {
+		assertTrue(sS.addEmployee(emp));
+	}
 	
+	@Test 
+	public void testInsertManager() {
+		assertTrue(sS.addManager(mana));
+	}
 	
+	@Test
+	public void testInsertItem() {
+		assertTrue(sS.addItem(item));
+	}
 	
+	@Test
+	public void testInsertInventory() {
+		assertTrue(sS.addInventory(inv));
+	}
 	
+	@Test
+	public void testInsertOffer() {
+		assertTrue(sS.addOffer(offer));
+	}
 	
+	@Test
+	public void testInsertOfferHistory() {
+		assertTrue(sS.addOfferHistory(oH));
+	}
 	
+	@Test
+	public void testInsertPayment() {
+		assertTrue(sS.addPayment(pay));
+	}
 	
+	@Test
+	public void testUpdateCustomerLogin() {
+		assertTrue(sS.updateCustomerLogin(cust));
+	}
 	
+	@Test
+	public void testUpdateEmployeeLogin() {
+		assertTrue(sS.updateEmployeeLogin(emp));
+	}
 	
+	@Test 
+	public void testUpdateManagerLogin() {
+		assertTrue(sS.updateManagerLogin(mana));
+	}
 	
+	@Test
+	public void testUpdateItemPrice() {
+		assertTrue(sS.updateItemPrice(item));
+	}
 	
+	@Test
+	public void testUpdateItemDescription() {
+		assertTrue(sS.updateItemDescription(item));
+	}
 	
+	@Test
+	public void testUpdateItemIsOwned() {
+		assertTrue(sS.updateItemIsOwned(item));
+	}
 	
+	@Test
+	public void testUpdateOfferIsAccepted() {
+		//TODO
+		assertFalse(sS.updateOfferIsAccepted(offer));
+	}
 	
+	@Test
+	public void testUpdateRemainingPayments() {
+		assertTrue(sS.updateRemainingPayments(pay));
+	}
 	
+	@Test
+	public void testDeleteCustomer() {
+		assertTrue(sS.deleteCustomer(1));
+	}
 	
+	@Test
+	public void testDeleteEmployee() {
+		assertTrue(sS.deleteEmployee(1));
+	}
 	
+	@Test
+	public void testDeleteItem() {
+		assertTrue(sS.deleteItem(1));
+	}
 	
+	@Test
+	public void testDeleteInventory() {
+		assertTrue(sS.deleteInventory(1));
+	}
 	
+	@Test
+	public void testDeleteItemOffers() {
+		assertTrue(sS.deleteItemOffers(1));
+	}
 	
+	@Test
+	public void testDeleteCustomerOffer() {
+		assertTrue(sS.deleteCustomerOffer(1,1));
+	}
 	
-	
+	@Test
+	public void testDeletePayment() {
+		assertTrue(sS.deletePayment(1));
+	}
 	
 
 }

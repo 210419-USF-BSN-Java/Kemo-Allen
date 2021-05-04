@@ -356,9 +356,9 @@ public class ShopService {
 		return sDao.updateOfferIsAccepted(offer);
 	}
 	
-	public boolean updateOfferHistoryStatus(OfferHistory oH) {
-		return sDao.updateOfferHistoryStatus(oH);
-	}
+//	public boolean updateOfferHistoryStatus(OfferHistory oH) {
+//		return sDao.updateOfferHistoryStatus(oH);
+//	}
 	
 	public boolean updateRemainingPayments(Payment pay) {
 		return sDao.updateRemainingPayments(pay);
