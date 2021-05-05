@@ -61,13 +61,14 @@ public class ShopDAOImpl implements ShopDAO{
 	public boolean insertEmployee(Employee emp) {
 		boolean success = false;
 		
-		String sql = "INSERT INTO employees (user_name, pass_word) VALUES (?,?)";
+		String sql = "INSERT INTO employees (user_name, pass_word, manager_id) VALUES (?,?,?)";
 		
 		try (Connection conn = ShopConnection.getConnection()){
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, emp.getUserName());
 			ps.setString(2, emp.getPassword());
+			ps.setInt(3, emp.getManagerId());
 			
 			ps.execute();
 			

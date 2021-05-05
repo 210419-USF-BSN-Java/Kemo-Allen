@@ -328,6 +328,8 @@ public class ShopFront {
 			System.out.println("Sorry. We could not find any items in your inventory.");
 		}
 		
+		System.out.println();
+		
 	}
 	
 	public void viewShop(Customer cust) {
@@ -350,10 +352,12 @@ public class ShopFront {
 		else {
 			System.out.println("Sorry. The shop is empty at the moment.");
 		}
+		System.out.println();
 		
 	}
 	
 	public void makeItemOffer(Customer cust, List<Item> itemList) {
+		//TODO exit if no offers are available.
 		int itemId;
 		Item offerItem;
 		Offer offer;
@@ -465,6 +469,7 @@ public class ShopFront {
 		else {
 			System.out.println("You don't currently have any payments.");
 		}
+		System.out.println();
 		
 	}
 	
@@ -538,6 +543,7 @@ public class ShopFront {
 		else {
 			System.out.println("You don't currently have any pending offers.");
 		}
+		System.out.println();
 		
 	}
 	
@@ -663,13 +669,13 @@ public class ShopFront {
 			System.out.println("Here is a list of the items in the shop:");
 			for(Item i: itemList) {
 				System.out.println("\t" + i);
-			}
-			System.out.println();
-			
+			}	
 		}
 		else {
 			System.out.println("The shop is empty at the moment.");
 		}
+		System.out.println();
+		
 	}
 	
 	public void addNewItemsToShop(Employee emp) {
@@ -861,6 +867,7 @@ public class ShopFront {
 		else {
 			System.out.println("No customers were found.");
 		}
+		System.out.println();
 		
 	}
 	
@@ -868,6 +875,7 @@ public class ShopFront {
 		List<Offer> offerList = service.getAllOffers();
 		
 		if(!offerList.isEmpty()) {
+			System.out.println("Here is a list of customer offers: ");
 			for(Offer o: offerList){
 				System.out.println("\t" + o);
 			}
@@ -876,6 +884,7 @@ public class ShopFront {
 		else {
 			System.out.println("Currently there are no unmanaged offers.");
 		}
+		System.out.println();
 		
 	}
 	
@@ -968,6 +977,7 @@ public class ShopFront {
 				System.out.println("\t" + p);
 			}
 		}
+		System.out.println();
 		
 	}
 	
@@ -1033,12 +1043,13 @@ public class ShopFront {
 		if(!empList.isEmpty()) {
 			System.out.println("Here is a list of employees that you supervise: ");
 			for(Employee e: empList) {
-				System.out.println("/t" + e);
+				System.out.println("\t" + e);
 			}
 		}
 		else {
 			System.out.println("You are not currently supervising any employees.");
 		}
+		System.out.println();
 		
 	}
 	
@@ -1064,7 +1075,7 @@ public class ShopFront {
 		else {
 			System.out.println("Sorry we could not the new Employee. Maybe employee: " + emp.getUserName() + " already exists.");
 		}
-		//TODO make sure manager id works
+
 	}
 	
 	public void fireEmployee(Manager mana) {
@@ -1124,6 +1135,7 @@ public class ShopFront {
 			System.out.println("The offer history is currently empty.");
 		}
 		
+		System.out.println();
 	}
 
 }

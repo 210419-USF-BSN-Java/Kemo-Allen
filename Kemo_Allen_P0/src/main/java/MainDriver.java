@@ -16,12 +16,6 @@ public class MainDriver {
 	public static void main(String[] args) {
 		ShopDAOImpl sd = new ShopDAOImpl();
 		
-//		Customer cust = new Customer(0, "Test", "The", false);
-//		
-//		sd.insertCustomer(cust);
-//		
-//		System.out.println(sd.selectCustomerByName(cust.getUserName()));
-		
 		shopDao = new ShopDAOImpl();
 		shopService = new ShopService(shopDao);
 		shopFront = new ShopFront(shopService);
