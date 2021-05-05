@@ -414,3 +414,19 @@
 2021-05-03 01:11:05 INFO  ShopFront:188 - Employee Kemo has signed in.
 2021-05-03 01:11:26 ERROR ShopDAOImpl:1185 - There was an issue when deleting offers
 2021-05-03 01:13:08 INFO  ShopFront:643 - Employee Kemo has logged out.
+2021-05-04 08:37:53 INFO  ShopFront:104 - New customer Test was added.
+2021-05-04 08:38:01 INFO  ShopFront:140 - Customer Test has signed in.
+2021-05-04 08:38:54 INFO  ShopFront:403 - An offer for item 1 was made by user by id 1
+2021-05-04 08:39:48 INFO  ShopFront:310 - Customer Test has logged out.
+2021-05-04 08:40:12 INFO  ShopFront:188 - Employee Kemo has signed in.
+2021-05-04 08:40:52 INFO  ShopFront:711 - Kemo added a new item: Flametongue to the database.
+2021-05-04 08:41:29 INFO  ShopFront:769 - Kemo made an update to item by id 2.
+2021-05-04 08:42:08 INFO  ShopFront:711 - Kemo added a new item: Junk to the database.
+2021-05-04 08:42:25 INFO  ShopFront:820 - Kemo removed item by id 3 from the database.
+2021-05-04 08:46:37 INFO  ShopFront:647 - Employee Kemo has logged out.
+2021-05-04 08:46:43 INFO  ShopFront:236 - Manager Kevin has signed in.
+2021-05-04 08:47:39 INFO  ShopFront:1055 - Manager Kevin hired new employee Steven
+2021-05-04 08:51:46 INFO  ShopFront:1016 - Manager Kevin has logged out.
+2021-05-04 15:43:30 INFO  ShopFront:140 - Customer Test has signed in.
+2021-05-04 15:44:26 INFO  ShopFront:504 - Customer 1 made a payment.
+2021-05-04 15:45:00 INFO  ShopFront:310 - Customer Test has logged out.

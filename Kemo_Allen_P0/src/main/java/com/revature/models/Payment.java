@@ -13,6 +13,7 @@ public class Payment {
 		super();
 		
 	}
+	
 	public Payment(int paymentId, int customerId, int itemId, double itemPrice, double rate, int numberOfPayments,
 			int paymentsRemaining) {
 		super();

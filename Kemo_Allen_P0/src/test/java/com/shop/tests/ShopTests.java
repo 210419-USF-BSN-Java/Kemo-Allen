@@ -36,8 +36,9 @@ public class ShopTests {
 	private static Manager mana = new Manager(2, "Anne", "bbb", false);
 	private static Employee emp = new Employee(5, "Mark", "aaa", 2, false);
 	private static Item item = new Item(5, "Epee", "Pointy Sword", 99.99, false);
-	private static Offer offer;
+	private static Offer offer, offer2;
 	private static Payment pay;
+	private static Payment pay2 = new Payment(9, 9, 9, 120, 0, 10, 5);
 	private static Inventory inv;
 	private static OfferHistory oH;
 	
@@ -115,12 +116,19 @@ public class ShopTests {
 		Mockito.when(sD.selectEmployeeByName(emp1.getUserName())).thenReturn(emp1);
 		Mockito.when(sD.selectEmployeeById(emp2.getId())).thenReturn(emp2);
 		Mockito.when(sD.selectAllEmployees()).thenReturn(empList);
+		Mockito.when(sD.selectEmployeesByManager((Integer)mana1.getId())).thenReturn(empList
+																					.stream().filter(x -> x.getManagerId() == (Integer)mana1.getId())
+																					.collect(Collectors.toList()));
 		//select manager
 		Mockito.when(sD.selectManagerById(mana1.getId())).thenReturn(mana1);
+		Mockito.when(sD.selectManagerByName(mana1.getUserName())).thenReturn(mana1);
 		//select item
 		Mockito.when(sD.selectItemByName(item1.getName())).thenReturn(item1);
 		Mockito.when(sD.selectItemById(item2.getItemId())).thenReturn(item2);
 		Mockito.when(sD.selectAllItems()).thenReturn(itemList);
+		Mockito.when(sD.selectUnownedItems()).thenReturn(itemList
+											.stream().filter(x -> x.isOwned() == false)
+											.collect(Collectors.toList()));
 		//select inventory
 		Mockito.when(sD.selectInventoryByCustomerId(inv1.getCustomerId())).thenReturn(invList
 																			.stream().filter(x -> x.getCustomerId() == inv1.getCustomerId())
@@ -190,6 +198,12 @@ public class ShopTests {
 		assertNotEquals(2.03, sS.validDouble("2"), 0.001);
 	}
 	
+	@Test
+	public void testValidPayInput() {
+		assertEquals(0, sS.validPayInput("a", pay2));
+		assertEquals(3, sS.validPayInput("3", pay2));
+	}
+	
 	@Test 
 	public void testConstructOffer() {
 		offer = sS.constructOffer(cust, item, "1");
@@ -218,7 +232,24 @@ public class ShopTests {
 	
 	@Test
 	public void testConstructOfferHistory() {
-		//TODO
+		List<Offer> offerList = new ArrayList<>();
+		List<OfferHistory> histList = new ArrayList<>();
+		offer2 = new Offer(1, 4, 4, 90.00, "3", true);
+		offerList.add(offer2);
+		
+		histList = sS.constructOfferHistory(offerList);
+		assertFalse(histList.isEmpty());
+	}
+	
+	@Test
+	public void testCalculateWeeklyPayment(){
+		assertEquals(12.0, sS.calculateWeeklyPayment(pay2), 0.00);
+	}
+	
+	@Test
+	public void testCalculateAmountRemaining() {
+		assertEquals(60.0, sS.calculateAmountRemaining(pay2, 12.0), 0.00);
+
 	}
 	
 	@Test
@@ -264,6 +295,20 @@ public class ShopTests {
 	}
 	
 	@Test
+	public void testSelectEmployeeByManager() {
+		assertFalse(sS.getEmployeesByManager(1).isEmpty());
+	}
+	
+	@Test
+	public void testSelectManagerByName() {
+		int id = 1;
+		
+		assertNotNull(sS.getManagerByName("Kevin"));
+		assertEquals(id, sS.getManagerByName("Kevin").getId());
+
+	}
+	
+	@Test
 	public void testSelectManagerById() {
 		String userName = "Kevin";
 		
@@ -290,6 +335,11 @@ public class ShopTests {
 	@Test 
 	public void testSelectAllItems() {
 		assertFalse(sS.getAllItems().isEmpty());
+	}
+	
+	@Test
+	public void testSelectUnownedItems() {
+		assertFalse(sS.getCustItems().isEmpty());
 	}
 	
 	@Test

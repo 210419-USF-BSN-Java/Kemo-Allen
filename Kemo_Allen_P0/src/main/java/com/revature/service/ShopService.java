@@ -19,7 +19,7 @@ public class ShopService {
 	private ShopDAO sDao;
 	
 	public ShopService() {
-		
+	
 	}
 	
 	public ShopService(ShopDAO sDao) {
@@ -72,6 +72,7 @@ public class ShopService {
 	
 	public Payment constructPayment(Offer offer) {
 		int payments;
+		double rate;
 		
 		if(offer.getPaymentType() == null) {
 			offer.setPaymentType("0");
@@ -79,19 +80,24 @@ public class ShopService {
 		
 		switch(offer.getPaymentType()) {
 		case "1": payments = 4;
+					rate = 0;
 			break;
 		case "2": payments = 6;
+					rate = 0;
 			break;
 		case "3": payments = 8;
+					rate = 0;	
 			break;
 		case "4": payments = 10;
+					rate = 0;
 			break;
 		default: payments = 0;
+					rate = 0;
 			break;
 		
 		}
 		
-		return new Payment(0, offer.getCustomerId(), offer.getItemId(), offer.getItemPrice(), 0, payments, payments);
+		return new Payment(0, offer.getCustomerId(), offer.getItemId(), offer.getItemPrice(), rate, payments, payments);
 	}
 	
 	public Inventory constructInventory(int customerId, Item item) {
@@ -117,6 +123,25 @@ public class ShopService {
 		
 		return oHList;
 		
+	}
+	
+	public double calculateWeeklyPayment(Payment pay) {
+		if(pay.getNumberOfPayments() > 0) {
+			return pay.getItemPrice() / pay.getNumberOfPayments();
+		}
+		else {
+			return 0;
+		}
+		
+	}
+	
+	public double calculateAmountRemaining(Payment pay, double weeklyPayment) {
+		if(pay.getNumberOfPayments() > 0) {
+		return (weeklyPayment * pay.getPaymentsRemaining());
+		}
+		else {
+			return 0;
+		}
 	}
 	
 	public boolean addCustomer(Customer cust) {

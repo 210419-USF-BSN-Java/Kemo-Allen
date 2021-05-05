@@ -21,6 +21,13 @@ public class Employee extends User{
 				+ ", managerId=" + managerId + "]";
 	}
 
-	
+	public Integer getManagerId() {
+		return managerId;
+	}
+
+	public void setManagerId(Integer managerId) {
+		this.managerId = managerId;
+	}
+
 	
 }

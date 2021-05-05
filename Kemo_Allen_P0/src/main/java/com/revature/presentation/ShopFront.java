@@ -450,12 +450,17 @@ public class ShopFront {
 	
 	public void viewRemainingPayments(Customer cust) {
 		List<Payment> payList = service.getPaymentsByCustomerId(cust.getId());
+		double amountRemaining, weeklyPayment;
 		
 		if(!payList.isEmpty()) {
 			System.out.println("Here are your current payments:");
 			for(Payment p: payList) {
-				System.out.println("\t" + p);
+				weeklyPayment = service.calculateWeeklyPayment(p);
+				amountRemaining = service.calculateAmountRemaining(p, weeklyPayment);
+				System.out.println("\tPayment: " + p.getPaymentId() + " has " + p.getPaymentsRemaining() +" payment(s) remaining."
+						+ " Weekly payment is $" + weeklyPayment + ", with a remaining balance of $" + amountRemaining);
 			}
+			
 		}
 		else {
 			System.out.println("You don't currently have any payments.");
@@ -923,9 +928,9 @@ public class ShopFront {
 					
 					//Make offer history of other offers for the same item
 					itemOfferList = service.getOffersByItemId(offer.getItemId());
-					System.out.println(itemOfferList);
+					//System.out.println(itemOfferList);
 					historyList = service.constructOfferHistory(itemOfferList);
-					System.out.println(historyList);
+					//System.out.println(historyList);
 					
 					for(OfferHistory oH: historyList) {
 						service.addOfferHistory(oH);
@@ -933,6 +938,8 @@ public class ShopFront {
 					
 					//Remove offers for the item from db
 					service.deleteItemOffers(offer.getItemId());
+					
+					System.out.println("A new payment has been added for Customer by id " + offer.getCustomerId());
 						
 				}
 				else {
@@ -1035,7 +1042,7 @@ public class ShopFront {
 		
 	}
 	
-	public void hireNewEmployee(Manager mana) {
+	public void hireNewEmployee(Manager mana) { 
 		Employee emp;
 		String userName, password;
 		boolean success;
@@ -1051,13 +1058,13 @@ public class ShopFront {
 		success = service.addEmployee(emp);
 		
 		if(success) {
-			System.out.println("New employee by username:" + emp.getUserName() + " has been added.");
+			System.out.println("New employee " + emp.getUserName() + " has been added.");
 			LOG.info("Manager " + mana.getUserName() + " hired new employee " + emp.getUserName());
 		}
 		else {
 			System.out.println("Sorry we could not the new Employee. Maybe employee: " + emp.getUserName() + " already exists.");
 		}
-		
+		//TODO make sure manager id works
 	}
 	
 	public void fireEmployee(Manager mana) {

@@ -409,7 +409,7 @@ public class ShopDAOImpl implements ShopDAO{
 		try (Connection conn = ShopConnection.getConnection()){
 			
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setInt(1, id);
+			ps.setInt(1, (int) id);
 			
 			ResultSet rs = ps.executeQuery();
 			

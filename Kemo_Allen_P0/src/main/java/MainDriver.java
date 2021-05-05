@@ -31,7 +31,7 @@ public class MainDriver {
 		boolean runMenu = true;
 		String input0;
 		
-		System.out.println("\tHello Welcome\n");
+		System.out.println("\tWelcome to Allen's Sword Emporium!\n");
 		
 		//log everyone out
 		
