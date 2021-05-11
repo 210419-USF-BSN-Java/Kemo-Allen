@@ -93,7 +93,7 @@ select * from inventories;
 select * from offer_histories;
 insert into employees (user_name, pass_word, manager_id) values('Kemo', '123', 1);
 insert into managers (user_name, pass_word) values('Kevin', '123');
-insert into items (item_name, description, price) values('Icebrand', 'Icy Sword', 199.19);
+insert into items (item_name, description, price) values('Epee', 'Pointy Sword', 99.99);
 select * from offers;
 delete from offers where offer_id = 2;
 delete from employees where user_id = 2;
