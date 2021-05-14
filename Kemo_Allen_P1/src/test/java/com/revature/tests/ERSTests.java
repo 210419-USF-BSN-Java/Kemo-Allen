@@ -1,11 +1,16 @@
 package com.revature.tests;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -86,7 +91,91 @@ public class ERSTests {
 		Mockito.when(rd.deleteReimbursementById(testReimb.getId())).thenReturn(true);
 	}
 	
+	//User Tests
 	
+	@Test
+	public void testGetUserById() {
+		assertNotNull(us.getUserById(1));
+		assertEquals("Kemo", us.getUserById(1).getFirstName());
+	}
+	
+	@Test
+	public void testGetUserByUserName() {
+		assertNotNull(us.getUserByUserName("squid"));
+		assertEquals("321", us.getUserByUserName("squid").getPassword());
+	}
+	
+	@Test
+	public void testGetAllUsers() {
+		assertFalse(us.getAllUsers().isEmpty());
+	}
+	
+	@Test
+	public void testGetAllEmployees() {
+		assertFalse(us.getAllEmployees().isEmpty());
+	}
+	
+	@Test
+	public void testGetAllManagers() {
+		assertFalse(us.getAllEmployees().isEmpty());
+	}
+	
+	@Test
+	public void testAddUser() {
+		assertTrue(us.addUser(testMana));
+	}
+	
+	@Test
+	public void testChangeUserInfo() {
+		assertTrue(us.changeUserInfo(testMana));
+	}
+	
+	@Test
+	public void testChangeLoggedInfo() {
+		assertTrue(us.changeLoggedInfo(testMana.getId()));
+	}
+	
+	@Test
+	public void testRemoveUser() {
+		assertTrue(us.removeUser(testEmp.getId()));
+	}
+	
+	//Reimbursement Tests
+	
+	@Test
+	public void testGetReimbById() {
+		assertNotNull(rs.getReimbursementById(1));
+		assertEquals(49.89, rs.getReimbursementById(1).getReimbAmount(), 0.001);
+	}
+	
+	@Test
+	public void testGetReimbsByAuthor() {
+		assertFalse(rs.getReimbursementsByAuthor(1).isEmpty());
+	}
+	
+	@Test
+	public void testGetReimbsByResolver() {
+		assertFalse(rs.getReimbursementsByResolver(3).isEmpty());
+	}
+	
+	@Test
+	public void testGetReimbsByStatus() {
+		assertFalse(rs.getReimbursementsByStatus(1).isEmpty());
+	}
+	
+	@Test
+	public void testAddReimb() {
+		assertTrue(rs.addReimbursement(testReimb));
+	}
+	
+	@Test
+	public void testChangeReimb() {
+		assertTrue(rs.changeReimbursement(testReimb));
+	}
+	
+	@Test
+	public void testRemoveReimb() {
+		assertTrue(rs.removeReimbursementById(testReimb.getId()));
+	}
+		
 }
-
-
