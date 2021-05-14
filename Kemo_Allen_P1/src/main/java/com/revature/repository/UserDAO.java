@@ -6,12 +6,16 @@ import com.revature.models.User;
 
 public interface UserDAO {
 
-	User selectUser();
+	User selectUserById(int id);
+	User selectUserByUserName(String uName);
 	List<User> selectAllUsers();
+	List<User> selectAllEmployees();
+	List<User> selectAllManagers();
 	
-	boolean insertUser();
+	boolean insertUser(User user);
 	
-	boolean updateUser();
+	boolean updateUserInfo(User user);
+	boolean updateLoggedIn(int id);
 	
-	boolean deleteUser();
+	boolean deleteUser(int id);
 }

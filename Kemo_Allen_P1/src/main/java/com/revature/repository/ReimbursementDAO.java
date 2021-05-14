@@ -6,13 +6,16 @@ import com.revature.models.Reimbursement;
 
 public interface ReimbursementDAO {
 	
-	Reimbursement selectReimbursement();
+	Reimbursement selectReimbursementById(int id);
+	List<Reimbursement> selectReimbursementsByAuthor(int id);
+	List<Reimbursement> selectReimbursementsByResolver(int id);
+	List<Reimbursement> selectReimbursementsByStatus(int status);
 	List<Reimbursement> selectAllReimbursements();
 	
-	boolean insertReimbursement();
+	boolean insertReimbursement(Reimbursement reimb);
 	
-	boolean updateReimbursement();
+	boolean updateReimbursement(Reimbursement reimb);
 	
-	boolean deleteReimbursement();
+	boolean deleteReimbursementById(int id);
 
 }

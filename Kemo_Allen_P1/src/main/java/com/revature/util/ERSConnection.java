@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
-
 public class ERSConnection {
 	//Run -> Run Configurations -> Java Application -> <The Application> -> Environment 
 		private static final String URL = System.getenv("aws_url"); 
