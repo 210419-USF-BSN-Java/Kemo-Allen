@@ -57,11 +57,6 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public boolean changeLoggedInfo(int id) {
-		return ud.updateLoggedIn(id);
-	}
-
-	@Override
 	public boolean removeUser(int id) {
 		return ud.deleteUser(id);
 	}

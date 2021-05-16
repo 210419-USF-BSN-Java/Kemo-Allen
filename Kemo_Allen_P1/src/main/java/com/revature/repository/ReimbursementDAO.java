@@ -10,6 +10,7 @@ public interface ReimbursementDAO {
 	List<Reimbursement> selectReimbursementsByAuthor(int id);
 	List<Reimbursement> selectReimbursementsByResolver(int id);
 	List<Reimbursement> selectReimbursementsByStatus(int status);
+	List<Reimbursement> selectReimbursementsByType(int type);
 	List<Reimbursement> selectAllReimbursements();
 	
 	boolean insertReimbursement(Reimbursement reimb);

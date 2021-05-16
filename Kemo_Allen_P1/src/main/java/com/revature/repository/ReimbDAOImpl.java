@@ -1,10 +1,16 @@
 package com.revature.repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.revature.models.Reimbursement;
+import com.revature.util.ERSConnection;
 
 public class ReimbDAOImpl implements ReimbursementDAO{
 
@@ -17,49 +23,260 @@ public class ReimbDAOImpl implements ReimbursementDAO{
 
 	@Override
 	public Reimbursement selectReimbursementById(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		Reimbursement reimb = null;
+		String sql = "SELECT FROM ers_reimbursement WHERE reimb_id = ?";
+		
+		try(Connection conn = ERSConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				reimb = new Reimbursement(rs.getInt(1),
+								rs.getInt(2),
+								rs.getInt(3),
+								rs.getInt(4),
+								rs.getDouble(5),
+								rs.getBytes(6),
+								rs.getTimestamp(7),
+								rs.getTimestamp(8),
+								rs.getInt(9),
+								rs.getString(10));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.info("There was an issue when getting a reimbursement.");
+		}
+		return reimb;
 	}
 
 	@Override
 	public List<Reimbursement> selectReimbursementsByAuthor(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Reimbursement> reimbList = new LinkedList<>();
+		String sql = "SELECT * FROM ers_reimbursement WHERE reimb_author = ?";
+		
+		try(Connection conn = ERSConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				reimbList.add(new Reimbursement(rs.getInt(1),
+								rs.getInt(2),
+								rs.getInt(3),
+								rs.getInt(4),
+								rs.getDouble(5),
+								rs.getBytes(6),
+								rs.getTimestamp(7),
+								rs.getTimestamp(8),
+								rs.getInt(9),
+								rs.getString(10)));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.info("There was an issue when getting multiple reimbursements.");
+		}
+		return reimbList;
 	}
 
 	@Override
 	public List<Reimbursement> selectReimbursementsByResolver(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Reimbursement> reimbList = new LinkedList<>();
+		String sql = "SELECT * FROM ers_reimbursement WHERE reimb_resolver = ?";
+		
+		try(Connection conn = ERSConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				reimbList.add(new Reimbursement(rs.getInt(1),
+								rs.getInt(2),
+								rs.getInt(3),
+								rs.getInt(4),
+								rs.getDouble(5),
+								rs.getBytes(6),
+								rs.getTimestamp(7),
+								rs.getTimestamp(8),
+								rs.getInt(9),
+								rs.getString(10)));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.info("There was an issue when getting multiple reimbursements.");
+		}
+		return reimbList;
 	}
 
 	@Override
 	public List<Reimbursement> selectReimbursementsByStatus(int status) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Reimbursement> reimbList = new LinkedList<>();
+		String sql = "SELECT * FROM ers_reimbursement WHERE reimb_status_id = ?";
+		
+		try(Connection conn = ERSConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, status);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				reimbList.add(new Reimbursement(rs.getInt(1),
+								rs.getInt(2),
+								rs.getInt(3),
+								rs.getInt(4),
+								rs.getDouble(5),
+								rs.getBytes(6),
+								rs.getTimestamp(7),
+								rs.getTimestamp(8),
+								rs.getInt(9),
+								rs.getString(10)));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.info("There was an issue when getting multiple reimbursements.");
+		}
+		return reimbList;
+	}
+	
+	@Override
+	public List<Reimbursement> selectReimbursementsByType(int type){
+		List<Reimbursement> reimbList = new LinkedList<>();
+		String sql = "SELECT * FROM ers_reimbursement WHERE reimb_type_id = ?";
+		
+		try(Connection conn = ERSConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, type);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				reimbList.add(new Reimbursement(rs.getInt(1),
+								rs.getInt(2),
+								rs.getInt(3),
+								rs.getInt(4),
+								rs.getDouble(5),
+								rs.getBytes(6),
+								rs.getTimestamp(7),
+								rs.getTimestamp(8),
+								rs.getInt(9),
+								rs.getString(10)));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.info("There was an issue when getting multiple reimbursements.");
+		}
+		return reimbList;
 	}
 
 	@Override
 	public List<Reimbursement> selectAllReimbursements() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Reimbursement> reimbList = new LinkedList<>();
+		String sql = "SELECT * FROM ers_reimbursement";
+		
+		try(Connection conn = ERSConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				reimbList.add(new Reimbursement(rs.getInt(1),
+								rs.getInt(2),
+								rs.getInt(3),
+								rs.getInt(4),
+								rs.getDouble(5),
+								rs.getBytes(6),
+								rs.getTimestamp(7),
+								rs.getTimestamp(8),
+								rs.getInt(9),
+								rs.getString(10)));
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.info("There was an issue when getting multiple reimbursements.");
+		}
+		return reimbList;
 	}
 
 	@Override
 	public boolean insertReimbursement(Reimbursement reimb) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+		String sql = "INSERT INTO ers_reimbursement (reimb_author, reimb_resolver, reimb_status_id "
+				+ "reimb_amount, reimb_receipt, reimb_submitted, reimb_resolved, reimb_type_id "
+				+ "reimb_description) VALUES(?,?,?,?,?,?,?,?,?)";
+		
+		try(Connection conn = ERSConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, reimb.getAuthorId());
+			ps.setInt(2, reimb.getResolverId());
+			ps.setInt(3, reimb.getReimbStatus());
+			ps.setDouble(4, reimb.getReimbAmount());
+			ps.setBytes(5, reimb.getReimbReceipt());
+			ps.setTimestamp(6, reimb.getReimbSubmitted());
+			ps.setTimestamp(7, reimb.getReimbResolved());
+			ps.setInt(8, reimb.getReimbType());
+			ps.setString(9, reimb.getReimbDescription());
+			
+			ps.execute();
+			
+			success = true;
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.info("There was an issue when adding a reimbursement.");
+		}
+		return success;
 	}
 
 	@Override
 	public boolean updateReimbursement(Reimbursement reimb) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+		String sql = "UPDATE ers_reimbursement SET reimb_resolver = ?, reimb_status_id = ?, "
+				+ "reimb_resolved = ? WHERE reimb_id = ?";
+		
+		try(Connection conn = ERSConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, reimb.getResolverId());
+			ps.setInt(2, reimb.getReimbStatus());
+			ps.setTimestamp(3, reimb.getReimbResolved());
+			ps.setInt(4, reimb.getId());
+			
+			ps.execute();
+			
+			success = true;
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.info("There was an issue when updating a reimbursement.");
+		}
+		return success;
 	}
 
 	@Override
 	public boolean deleteReimbursementById(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean success = false;
+		String sql = "DELETE FROM ers_reimbursement WHERE reimb_id = ?";
+		
+		try(Connection conn = ERSConnection.getConnection()){
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			
+			ps.execute();
+			
+			success = true;
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			LOG.info("There was an issue when deleting a reimbursement.");
+		}
+		return success;
 	}
 }

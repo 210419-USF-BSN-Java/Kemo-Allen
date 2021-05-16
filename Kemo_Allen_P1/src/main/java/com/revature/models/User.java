@@ -12,7 +12,6 @@ public class User implements Serializable{
 	private String lastName;
 	private String email;
 	private Integer userRole;
-	private Boolean loggedIn;
 	
 	public User() {
 		super();
@@ -20,7 +19,7 @@ public class User implements Serializable{
 	}
 
 	public User(Integer id, String userName, String password, String firstName, String lastName, String email,
-			Integer userRole, Boolean loggedIn) {
+			Integer userRole) {
 		super();
 		this.id = id;
 		this.userName = userName;
@@ -29,7 +28,6 @@ public class User implements Serializable{
 		this.lastName = lastName;
 		this.email = email;
 		this.userRole = userRole;
-		this.loggedIn = loggedIn;
 	}
 
 	public Integer getId() {
@@ -88,14 +86,6 @@ public class User implements Serializable{
 		this.userRole = userRole;
 	}
 
-	public Boolean getLoggedIn() {
-		return loggedIn;
-	}
-
-	public void setLoggedIn(Boolean loggedIn) {
-		this.loggedIn = loggedIn;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -108,7 +98,6 @@ public class User implements Serializable{
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + ((loggedIn == null) ? 0 : loggedIn.hashCode());
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
 		result = prime * result + ((userRole == null) ? 0 : userRole.hashCode());
@@ -144,11 +133,6 @@ public class User implements Serializable{
 				return false;
 		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (loggedIn == null) {
-			if (other.loggedIn != null)
-				return false;
-		} else if (!loggedIn.equals(other.loggedIn))
-			return false;
 		if (password == null) {
 			if (other.password != null)
 				return false;
@@ -170,8 +154,7 @@ public class User implements Serializable{
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userName=" + userName + ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", email=" + email + ", userRole=" + userRole + ", loggedIn=" + loggedIn
-				+ "]";
+				+ ", lastName=" + lastName + ", email=" + email + ", userRole=" + userRole + "]";
 	}
 
 }

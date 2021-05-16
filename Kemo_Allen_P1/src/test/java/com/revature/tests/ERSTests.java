@@ -25,9 +25,9 @@ public class ERSTests {
 	
 	private static UserServiceImpl us;
 	private static ReimbServiceImpl rs;
-	private static User testEmp = new User(5, "tester", "123", "The", "Test", "the.test@rev.com", 1, false);
-	private static User testMana = new User(4, "jsmith", "def", "John", "Smith", "john.smith@rev.com", 2, false);
-	private static Reimbursement testReimb = new Reimbursement(4, 5, 0, 0, 500.00, null, null, 2, "Did catering.");
+	private static User testEmp = new User(5, "tester", "123", "The", "Test", "the.test@rev.com", 1);
+	private static User testMana = new User(4, "jsmith", "def", "John", "Smith", "john.smith@rev.com", 2);
+	private static Reimbursement testReimb = new Reimbursement(4, 5, 0, 0, 500.00, null, null, null, 2, "Did catering.");
 	
 	@Mock
 	private static UserDAOImpl ud;
@@ -43,18 +43,18 @@ public class ERSTests {
 		
 		//User List
 		List<User> userList = new LinkedList<>();
-		User emp1 = new User(1, "kallen", "123", "Kemo", "Allen", "kemo.allen@rev.com", 1, false);
-		User emp2 = new User(2, "squid", "321", "Sydney", "Martin", "sydney.martin@rev.com", 1, false);
-		User mana1 = new User(3, "kth", "abc", "Kevin", "Hau", "kevin.hau@rev.com", 2, false);
+		User emp1 = new User(1, "kallen", "123", "Kemo", "Allen", "kemo.allen@rev.com", 1);
+		User emp2 = new User(2, "squid", "321", "Sydney", "Martin", "sydney.martin@rev.com", 1);
+		User mana1 = new User(3, "kth", "abc", "Kevin", "Hau", "kevin.hau@rev.com", 2);
 		userList.add(emp1);
 		userList.add(emp2);
 		userList.add(mana1);
 		
 		//Reimbursement List
 		List<Reimbursement> reimbList = new LinkedList<>();
-		Reimbursement reimb1 = new Reimbursement(1, 1, 3, -1, 49.89, null, null, 2, "Food was bad.");
-		Reimbursement reimb2 = new Reimbursement(2, 2, 3, 1, 549.32, null, null, 3, "Moving is expensive.");
-		Reimbursement reimb3 = new Reimbursement(3, 1, 3, 1, 100.00, null, null, 1, "Company card didn't work on the first day.");
+		Reimbursement reimb1 = new Reimbursement(1, 1, 3, -1, 49.89, null, null, null, 2, "Food was bad.");
+		Reimbursement reimb2 = new Reimbursement(2, 2, 3, 1, 549.32, null, null, null, 3, "Moving is expensive.");
+		Reimbursement reimb3 = new Reimbursement(3, 1, 3, 1, 100.00, null, null, null, 1, "Company card didn't work on the first day.");
 		reimbList.add(reimb1);
 		reimbList.add(reimb2);
 		reimbList.add(reimb3);
@@ -72,7 +72,6 @@ public class ERSTests {
 		Mockito.when(ud.insertUser(testMana)).thenReturn(true);
 		//Update
 		Mockito.when(ud.updateUserInfo(testMana)).thenReturn(true);
-		Mockito.when(ud.updateLoggedIn(testMana.getId())).thenReturn(true);
 		//Delete
 		Mockito.when(ud.deleteUser(testEmp.getId())).thenReturn(true);
 		
@@ -82,6 +81,7 @@ public class ERSTests {
 		Mockito.when(rd.selectReimbursementsByAuthor(reimb1.getAuthorId())).thenReturn(reimbList.stream().filter(x -> x.getAuthorId() == reimb1.getAuthorId()).collect(Collectors.toList()));
 		Mockito.when(rd.selectReimbursementsByResolver(reimb1.getResolverId())).thenReturn(reimbList.stream().filter(x -> x.getResolverId() == reimb1.getResolverId()).collect(Collectors.toList()));
 		Mockito.when(rd.selectReimbursementsByStatus(reimb2.getReimbStatus())).thenReturn(reimbList.stream().filter(x -> x.getReimbStatus() == reimb2.getReimbStatus()).collect(Collectors.toList()));
+		Mockito.when(rd.selectReimbursementsByType(reimb2.getReimbType())).thenReturn(reimbList.stream().filter(x -> x.getReimbType() == reimb2.getReimbType()).collect(Collectors.toList()));
 		Mockito.when(rd.selectAllReimbursements()).thenReturn(reimbList);
 		//Insert
 		Mockito.when(rd.insertReimbursement(testReimb)).thenReturn(true);
@@ -131,11 +131,6 @@ public class ERSTests {
 	}
 	
 	@Test
-	public void testChangeLoggedInfo() {
-		assertTrue(us.changeLoggedInfo(testMana.getId()));
-	}
-	
-	@Test
 	public void testRemoveUser() {
 		assertTrue(us.removeUser(testEmp.getId()));
 	}
@@ -161,6 +156,11 @@ public class ERSTests {
 	@Test
 	public void testGetReimbsByStatus() {
 		assertFalse(rs.getReimbursementsByStatus(1).isEmpty());
+	}
+	
+	@Test
+	public void testGetReimbsByType() {
+		assertFalse(rs.getReimbursementsByType(3).isEmpty());
 	}
 	
 	@Test

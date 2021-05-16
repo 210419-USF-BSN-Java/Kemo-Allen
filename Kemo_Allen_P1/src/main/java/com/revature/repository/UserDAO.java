@@ -15,7 +15,6 @@ public interface UserDAO {
 	boolean insertUser(User user);
 	
 	boolean updateUserInfo(User user);
-	boolean updateLoggedIn(int id);
 	
 	boolean deleteUser(int id);
 }

@@ -39,6 +39,12 @@ public class ReimbServiceImpl implements ReimbursementService{
 		List<Reimbursement> reimbList = rd.selectReimbursementsByStatus(status);
 		return reimbList;
 	}
+	
+	@Override
+	public List<Reimbursement> getReimbursementsByType(int type){
+		List<Reimbursement> reimbList = rd.selectReimbursementsByType(type);
+		return reimbList;
+	}
 
 	@Override
 	public List<Reimbursement> getAllReimbursements() {

@@ -15,8 +15,9 @@ public interface UserService {
 	boolean addUser(User user);
 	
 	boolean changeUserInfo(User user);
-	boolean changeLoggedInfo(int id);
 	
 	boolean removeUser(int id);
+	
+	//Encrpyt password
 	
 }
