@@ -1,7 +1,8 @@
 package com.revature.models;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 public class Reimbursement implements Serializable{
@@ -10,11 +11,11 @@ public class Reimbursement implements Serializable{
 	private Integer id;
 	private Integer authorId; //Employee
 	private Integer resolverId; //Manager
-	private Integer reimbStatus; //0 - no action / -1 rejected / 1 accepted
+	private Integer reimbStatus; //0 - no action / 2 rejected / 1 accepted
 	private Double reimbAmount;
 	private byte[] reimbReceipt;
-	private Timestamp reimbSubmitted; //Time sent
-	private Timestamp reimbResolved; //Time resolved //Use DateTime in sql
+	private LocalDateTime reimbSubmitted; //Time sent
+	private LocalDateTime reimbResolved; //Time resolved //Use DateTime in sql
 	private Integer reimbType; // 1 - LODGING / 2 - FOOD ....
 	private String reimbDescription; // Details of reimbType
 	//receipt
@@ -25,7 +26,7 @@ public class Reimbursement implements Serializable{
 	}
 	
 	public Reimbursement(Integer id, Integer authorId, Integer resolverId, Integer reimbStatus, Double reimbAmount,
-			byte[] reimbReceipt, Timestamp reimbSubmitted, Timestamp reimbResolved, Integer reimbType,
+			byte[] reimbReceipt, LocalDateTime reimbSubmitted, LocalDateTime reimbResolved, Integer reimbType,
 			String reimbDescription) {
 		super();
 		this.id = id;
@@ -36,6 +37,21 @@ public class Reimbursement implements Serializable{
 		this.reimbReceipt = reimbReceipt;
 		this.reimbSubmitted = reimbSubmitted;
 		this.reimbResolved = reimbResolved;
+		this.reimbType = reimbType;
+		this.reimbDescription = reimbDescription;
+	}
+	
+	
+
+	public Reimbursement(Integer id, Integer authorId, Integer resolverId, Integer reimbStatus, Double reimbAmount,
+			byte[] reimbReceipt, Integer reimbType, String reimbDescription) {
+		super();
+		this.id = id;
+		this.authorId = authorId;
+		this.resolverId = resolverId;
+		this.reimbStatus = reimbStatus;
+		this.reimbAmount = reimbAmount;
+		this.reimbReceipt = reimbReceipt;
 		this.reimbType = reimbType;
 		this.reimbDescription = reimbDescription;
 	}
@@ -76,16 +92,16 @@ public class Reimbursement implements Serializable{
 	public void setReimbAmount(Double reimbAmount) {
 		this.reimbAmount = reimbAmount;
 	}
-	public Timestamp getReimbSubmitted() {
+	public LocalDateTime getReimbSubmitted() {
 		return reimbSubmitted;
 	}
-	public void setReimbSubmitted(Timestamp reimbSubmitted) {
+	public void setReimbSubmitted(LocalDateTime reimbSubmitted) {
 		this.reimbSubmitted = reimbSubmitted;
 	}
-	public Timestamp getReimbResolved() {
+	public LocalDateTime getReimbResolved() {
 		return reimbResolved;
 	}
-	public void setReimbResolved(Timestamp reimbResolved) {
+	public void setReimbResolved(LocalDateTime reimbResolved) {
 		this.reimbResolved = reimbResolved;
 	}
 	public Integer getReimbType() {

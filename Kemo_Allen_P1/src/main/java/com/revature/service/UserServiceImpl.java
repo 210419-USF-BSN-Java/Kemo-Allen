@@ -16,6 +16,22 @@ public class UserServiceImpl implements UserService{
 	public UserServiceImpl(UserDAO ud) {
 		this.ud = ud;
 	}
+	
+	public User loginUser(String userName, String password) {
+		User loginUser = null;
+		boolean passwordMatch;
+		
+		loginUser = getUserByUserName(userName);
+		
+		if(loginUser != null) {
+			passwordMatch = loginUser.getPassword().compareTo(password) == 0;
+			if(passwordMatch) {
+				return loginUser;
+			}
+		}
+			
+		return null;
+	}
 
 	@Override
 	public User getUserById(int id) {
@@ -60,4 +76,6 @@ public class UserServiceImpl implements UserService{
 	public boolean removeUser(int id) {
 		return ud.deleteUser(id);
 	}
+	
+	
 }

@@ -25,7 +25,7 @@ public class UserDAOImpl implements UserDAO{
 	public User selectUserById(int id) {
 		User user = null;
 		
-		String sql = "SELECT FROM ers_users WHERE ers_user_id = ?";
+		String sql = "SELECT * FROM ers_users WHERE ers_user_id = ?";
 		
 		try(Connection conn = ERSConnection.getConnection()){
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -55,7 +55,7 @@ public class UserDAOImpl implements UserDAO{
 	public User selectUserByUserName(String uName) {
 		User user = null;
 		
-		String sql = "SELECT FROM ers_users WHERE ers_username = ?";
+		String sql = "SELECT * FROM ers_users WHERE ers_username = ?";
 		
 		try(Connection conn = ERSConnection.getConnection()){
 			PreparedStatement ps = conn.prepareStatement(sql);

@@ -5,6 +5,8 @@ import java.util.List;
 import com.revature.models.User;
 
 public interface UserService {
+	
+	User loginUser(String userName, String password);
 
 	User getUserById(int id);
 	User getUserByUserName(String uName);

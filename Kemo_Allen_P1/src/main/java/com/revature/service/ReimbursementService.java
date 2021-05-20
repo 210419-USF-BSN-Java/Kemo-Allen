@@ -12,6 +12,7 @@ public interface ReimbursementService {
 	List<Reimbursement> getReimbursementsByStatus(int status);
 	List<Reimbursement> getReimbursementsByType(int type);
 	List<Reimbursement> getAllReimbursements();
+	List<Reimbursement> getReimbursementsByAuthorAndStatus(int id, int status);
 	
 	boolean addReimbursement(Reimbursement reimb);
 	

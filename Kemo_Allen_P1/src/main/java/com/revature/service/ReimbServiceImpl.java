@@ -1,6 +1,7 @@
 package com.revature.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.revature.models.Reimbursement;
 import com.revature.repository.ReimbursementDAO;
@@ -65,6 +66,12 @@ public class ReimbServiceImpl implements ReimbursementService{
 	@Override
 	public boolean removeReimbursementById(int id) {
 		return rd.deleteReimbursementById(id);
+	}
+
+	@Override
+	public List<Reimbursement> getReimbursementsByAuthorAndStatus(int id, int status) {
+		List<Reimbursement> reimbList = rd.selectReimbursementsByAuthor(id);
+		return reimbList.stream().filter(x -> x.getReimbStatus() == status).collect(Collectors.toList());
 	}
 
 }

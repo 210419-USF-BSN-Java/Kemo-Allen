@@ -24,7 +24,7 @@ public class FrontController extends DefaultServlet{
 		String path = request.getRequestURI().substring(request.getContextPath().length());
 		System.out.println(path);
 				
-		if(path.startsWith("/static/") || path.equals("/") || path.equals("/index.html") ) {
+		if(path.startsWith("/static/") || path.equals("/") || path.equals("/index.html")) {
 			super.doGet(request, response);
 		}else {	
 			rh.processRequest(request, response);

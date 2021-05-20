@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.revature.delegates.EmployeeDelegate;
 import com.revature.delegates.LoginDelegate;
 
 public class RequestHelper {
@@ -15,7 +16,8 @@ public class RequestHelper {
 		
 	}
 	//Delegates
-	LoginDelegate ld = new LoginDelegate();
+	private LoginDelegate ld = new LoginDelegate();
+	private EmployeeDelegate ed = new EmployeeDelegate();
 
 	public void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
@@ -42,8 +44,9 @@ public class RequestHelper {
 			break;
 			
 		case "employee":
+				ed.process(request, response);
 			break;
-		
+			
 		case "manager":
 			break;
 		
@@ -54,16 +57,5 @@ public class RequestHelper {
 		}
 	}
 	
-	public static Object process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException  {
-		switch(request.getRequestURI()) {
-		case "/FrontController/login":
-			
-			break;
-		default:
-			
-			break;
-		}
-			return null;
-		}
 }
 	

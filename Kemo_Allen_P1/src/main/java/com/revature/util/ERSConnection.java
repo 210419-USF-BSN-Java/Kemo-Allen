@@ -16,12 +16,13 @@ public class ERSConnection {
 
 		private static Connection conn;
 		
-		public static Connection getConnection() {
+		public static Connection getConnection()  {
 			try { 
 				
+				Class.forName("org.postgresql.Driver");
 				conn = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 				
-			} catch (SQLException e) {
+			} catch (SQLException | ClassNotFoundException e) {
 				e.printStackTrace();
 				LOG.error("There was an issue connecting to the data base.");
 			}
