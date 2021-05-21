@@ -73,5 +73,11 @@ public class ReimbServiceImpl implements ReimbursementService{
 		List<Reimbursement> reimbList = rd.selectReimbursementsByAuthor(id);
 		return reimbList.stream().filter(x -> x.getReimbStatus() == status).collect(Collectors.toList());
 	}
+	
+	@Override
+	public List<Reimbursement> getResolvedReimbursements(){
+		List<Reimbursement> reimbList = rd.selectAllReimbursements();
+		return reimbList.stream().filter(x -> x.getReimbStatus() != 0).collect(Collectors.toList());
+	}
 
 }

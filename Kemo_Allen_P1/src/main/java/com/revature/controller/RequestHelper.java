@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.revature.delegates.EmployeeDelegate;
 import com.revature.delegates.LoginDelegate;
+import com.revature.delegates.ManagerDelegate;
 
 public class RequestHelper {
 
@@ -18,6 +19,7 @@ public class RequestHelper {
 	//Delegates
 	private LoginDelegate ld = new LoginDelegate();
 	private EmployeeDelegate ed = new EmployeeDelegate();
+	private ManagerDelegate md = new ManagerDelegate();
 
 	public void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
@@ -48,6 +50,7 @@ public class RequestHelper {
 			break;
 			
 		case "manager":
+				md.process(request, response);
 			break;
 		
 		default:

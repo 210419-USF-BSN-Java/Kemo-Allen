@@ -45,12 +45,10 @@ public class LoginDelegate implements Delegateable{
 			if(loggedInUser != null) {
 				response.setStatus(201);
 				
-				request.getSession().setAttribute("employee", loggedInUser);
+				request.getSession().setAttribute("id", loggedInUser.getId()+"");
 				
-//				Cookie cookie = new Cookie("userId", loggedInUser.getUserName());
-//				cookie.setMaxAge(86400);
-//				response.addCookie(cookie);
-				
+				//createCookie(loggedInUser, response);
+
 				if(loggedInUser.getUserRole() == 2) {
 					response.sendRedirect("static/manager.html");
 				}else {
@@ -69,6 +67,15 @@ public class LoginDelegate implements Delegateable{
 			response.sendError(400, "Request not supported.");
 			break;
 		}
+		
+	}
+	
+	public void createCookie(User user, HttpServletResponse response) {
+		//Cookie cookies[]=request.getCookies();
+		
+		Cookie newCookie = new Cookie("userId", user.getId() +"");
+		
+		response.addCookie(newCookie);
 		
 	}
 

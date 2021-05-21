@@ -5,10 +5,8 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -23,12 +21,13 @@ import com.revature.service.ReimbursementService;
 import com.revature.service.UserService;
 import com.revature.service.UserServiceImpl;
 
-public class EmployeeDelegate implements Delegateable{
+public class ManagerDelegate implements Delegateable{
 	private ObjectMapper om = new ObjectMapper();
 	private UserDAO userDao;
 	private UserService userService;
 	private ReimbursementDAO reimbDao;
 	private ReimbursementService reimbService;
+
 
 	@Override
 	public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -37,72 +36,40 @@ public class EmployeeDelegate implements Delegateable{
 		userService = new UserServiceImpl(userDao);
 		reimbDao = new ReimbDAOImpl();
 		reimbService = new ReimbServiceImpl(reimbDao);
-		
+				
 		PrintWriter pw = response.getWriter();
-		
+				
 		String path = (String) request.getAttribute("path");
-		
+				
 		//Add time datatype to Jackson
 		om.registerModule(new JavaTimeModule());
-		
-		//Get the user id from the session
-		HttpSession session = request.getSession();
-		Integer id = tryParseInt((String)(session.getAttribute("id")));
 		
 		switch(request.getMethod()) {
 		case "GET":
 			switch(path) {
-			case "profile":
-				User employee = userService.getUserById(id);
-				response.getWriter().write(om.writeValueAsString(employee));
-				//pw.write(om.writeValueAsString(obj));
-				break;
-			case "viewPending":	
-				List<Reimbursement> pendingList = reimbService.getReimbursementsByAuthorAndStatus(id, 0);
+			case "viewPending":
+				List<Reimbursement> pendingList = reimbService.getReimbursementsByStatus(0);
 				response.getWriter().write(om.writeValueAsString(pendingList));
 				break;
 			case "viewResolved":
-				List<Reimbursement> resolvedList = reimbService.getReimbursementsByAuthorAndStatus(id, 1);
+				List<Reimbursement> resolvedList = reimbService.getResolvedReimbursements();
 				response.getWriter().write(om.writeValueAsString(resolvedList));
+				break;
+			case "viewEmployees":
+				List<User> empList = userService.getAllEmployees();
+				response.getWriter().write(om.writeValueAsString(empList));
 				break;
 			default:
 				break;
 			}
+		
 			break;
 		case "POST":
-			switch(path) {
-			case "submitForm":
-				
-				break;
-			}
 			break;
 		default:
 			break;
-		
 		}
 		
-	}
-	
-	public Integer getIdFromCookies(HttpServletRequest request) {
-		Cookie cookies[] = request.getCookies();
-		
-		for(Cookie c: cookies) {
-			
-		}
-		
-		return 0;
-	}
-	
-	public Integer tryParseInt(String input) {
-		Integer num = 0;
-		
-		try {
-			num = Integer.parseInt(input);
-		}catch(NumberFormatException e){
-			
-		}
-		
-		return num;
 	}
 
 }

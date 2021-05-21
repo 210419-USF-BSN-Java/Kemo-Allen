@@ -26,22 +26,34 @@
 		</div>
 	</nav>
     <h2>Manager Page</h2>
-    <form action="../manager" method="POST">
-        <button type="button">Manage Employee Reimbursements</button>
+    <form action="../manager/manageReimb" method="POST">
+        <button type="button" id="manage">Manage Employee Reimbursements</button>
     </form>
     <br>
-    <form action="../manager" method="GET">
-        <button type="button">View Employee Reimbursements</button>
+    <form action="../manager/viewEmp" method="POST">
+        <button type="button" id="emp">View Employee Requests</button>
     </form>
     <br>
-    <form action="../manager" method="GET">
-        <button type="button">View Resolved Requests</button>
+    <form action="../manager/viewPending" method="GET">
+        <button type="button" id="pending">View Pending Requests</button>
     </form>
     <br>
-    <form action="../manager" method="GET">
-        <button type="button">View All Employees</button>
+    <form action="../manager/viewResolved" method="GET">
+        <button type="button" id="resolved">View Resolved Requests</button>
     </form>
     <br>
+    <form action="../manager/viewEmployees" method="GET">
+        <button type="button" id ="employees">View All Employees</button>
+    </form>
+    
+    <div class ="row">
+       
+        <div class="col-5" id = "body2">
+           
+        </div>
 
+    </div>
+
+    <script src="managerScript.js"></script>
 </body>
 </html>

@@ -12,3 +12,4 @@
 2021-05-19 05:01:06 ERROR ERSConnection:27 - There was an issue connecting to the data base.
 2021-05-19 13:08:29 INFO  UserDAOImpl:78 - There was an issue when selecting a user.
 2021-05-19 13:10:13 INFO  UserDAOImpl:78 - There was an issue when selecting a user.
+2021-05-20 19:03:06 ERROR ERSConnection:27 - There was an issue connecting to the data base.
