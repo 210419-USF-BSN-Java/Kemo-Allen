@@ -24,19 +24,19 @@ public class RequestHelper {
 	public void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
 		StringBuilder uriBuilder = new StringBuilder(request.getRequestURI());
-		System.out.println(uriBuilder);
+		//System.out.println(uriBuilder);
 		
 		//Replace domain with ""
 		uriBuilder.replace(0, request.getContextPath().length() + 1, "");
-		System.out.println(uriBuilder);
+		//System.out.println(uriBuilder);
 		
 		if(uriBuilder.indexOf("/") != -1) {
 			request.setAttribute("path", uriBuilder.substring(uriBuilder.indexOf("/") + 1));
 			//places subdirectory in an attribute called path
-			System.out.println(uriBuilder);
+			//System.out.println(uriBuilder);
 			
 			uriBuilder.replace(uriBuilder.indexOf("/"), uriBuilder.length(), "");
-			System.out.println(uriBuilder);
+			//System.out.println(uriBuilder);
 			
 		}
 		

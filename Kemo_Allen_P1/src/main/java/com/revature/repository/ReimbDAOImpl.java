@@ -215,21 +215,19 @@ public class ReimbDAOImpl implements ReimbursementDAO{
 	@Override
 	public boolean insertReimbursement(Reimbursement reimb) {
 		boolean success = false;
-		String sql = "INSERT INTO ers_reimbursement (reimb_author, reimb_resolver, reimb_status_id, "
-				+ "reimb_amount, reimb_receipt, reimb_submitted, reimb_resolved, reimb_type_id, "
-				+ "reimb_description) VALUES(?,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO ers_reimbursement (reimb_author, reimb_status_id, "
+				+ "reimb_amount, reimb_receipt, reimb_submitted, reimb_type_id, "
+				+ "reimb_description) VALUES(?,?,?,?,?,?,?)";
 		
 		try(Connection conn = ERSConnection.getConnection()){
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setInt(1, reimb.getAuthorId());
-			ps.setInt(2, reimb.getResolverId());
-			ps.setInt(3, reimb.getReimbStatus());
-			ps.setDouble(4, reimb.getReimbAmount());
-			ps.setBytes(5, reimb.getReimbReceipt());
-			ps.setObject(6, reimb.getReimbSubmitted());
-			ps.setObject(7, reimb.getReimbResolved());
-			ps.setInt(8, reimb.getReimbType());
-			ps.setString(9, reimb.getReimbDescription());
+			ps.setInt(2, reimb.getReimbStatus());
+			ps.setDouble(3, reimb.getReimbAmount());
+			ps.setBytes(4, reimb.getReimbReceipt());
+			ps.setObject(5, reimb.getReimbSubmitted());
+			ps.setInt(6, reimb.getReimbType());
+			ps.setString(7, reimb.getReimbDescription());
 			
 			ps.execute();
 			

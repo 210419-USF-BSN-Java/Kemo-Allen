@@ -22,7 +22,7 @@ public class FrontController extends DefaultServlet{
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
 		// Kemo_Allen_P1/subdirectory/{value} - returns subdirectory/
 		String path = request.getRequestURI().substring(request.getContextPath().length());
-		System.out.println(path);
+		//System.out.println(path);
 				
 		if(path.startsWith("/static/") || path.equals("/") || path.equals("/index.html")) {
 			super.doGet(request, response);
