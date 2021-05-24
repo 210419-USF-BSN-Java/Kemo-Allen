@@ -80,4 +80,17 @@ public class ReimbServiceImpl implements ReimbursementService{
 		return reimbList.stream().filter(x -> x.getReimbStatus() != 0).collect(Collectors.toList());
 	}
 
+	@Override
+	public boolean checkIfUnresolved(int id) {
+		List<Reimbursement> reimbList = getReimbursementsByStatus(0);
+		
+		for(Reimbursement r: reimbList) {
+			if(r.getId() == id) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 }

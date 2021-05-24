@@ -1,12 +1,13 @@
 package com.revature.delegates;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -37,12 +38,12 @@ public class ManagerDelegate implements Delegateable{
 		reimbDao = new ReimbDAOImpl();
 		reimbService = new ReimbServiceImpl(reimbDao);
 				
-		PrintWriter pw = response.getWriter();
-				
 		String path = (String) request.getAttribute("path");
 				
 		//Add time datatype to Jackson
 		om.registerModule(new JavaTimeModule());
+		HttpSession session = request.getSession();
+		Integer id = tryParseInt((String)(session.getAttribute("id")));
 		System.out.println(path);
 		
 		switch(request.getMethod()) {
@@ -58,24 +59,7 @@ public class ManagerDelegate implements Delegateable{
 				break;
 			case "viewEmployees":
 				List<User> empList = userService.getAllEmployees();
-				response.getWriter().write(om.writeValueAsString(empList));
-				break;
-			case "viewEmployeeReimbursement":
-				System.out.println("Inside");
-				String query = request.getQueryString();
-				System.out.println(query);
-				
-//				String id = request.getParameter("empId");
-//				Integer empId = tryParseInt(id);
-//				List<Reimbursement> employeeReimb = reimbService.getReimbursementsByAuthor(empId);
-//				
-//				if(employeeReimb.isEmpty()) {
-//					response.getWriter().write(om.writeValueAsString(null));
-//				}
-//				else {
-//					response.getWriter().write(om.writeValueAsString(employeeReimb));
-//				}
-				
+				response.getWriter().write(om.writeValueAsString(empList));	
 				break;
 			default:
 				break;
@@ -85,11 +69,11 @@ public class ManagerDelegate implements Delegateable{
 		case "POST":
 			switch(path) { //Create View
 			case "viewEmployeeReimbursement":
-				String id = request.getParameter("empId");
+				String empId = request.getParameter("empId");
 				System.out.println(id);
 
-				Integer empId = tryParseInt(id);
-				List<Reimbursement> employeeReimb = reimbService.getReimbursementsByAuthor(empId);
+				Integer employeeId = tryParseInt(empId);
+				List<Reimbursement> employeeReimb = reimbService.getReimbursementsByAuthor(employeeId);
 				
 				if(employeeReimb.isEmpty()) {
 					response.getWriter().write(om.writeValueAsString(null));
@@ -97,7 +81,33 @@ public class ManagerDelegate implements Delegateable{
 				else {
 					response.getWriter().write(om.writeValueAsString(employeeReimb));
 				}
+				break;
+			case "editReimbursementStatus":
+				Integer reimbId = tryParseInt(request.getParameter("reimbId"));
+				Integer reimbStatus = tryParseInt(request.getParameter("status"));
 				
+				boolean isUnresolved = reimbService.checkIfUnresolved(reimbId);
+				
+				if(isUnresolved) {
+					Reimbursement reimb = reimbService.getReimbursementById(reimbId);
+					LocalDateTime timeResolved = LocalDateTime.now();
+					
+					reimb.setReimbStatus(reimbStatus);
+					reimb.setReimbResolved(timeResolved);
+					reimb.setResolverId(id);
+					
+					reimbService.changeReimbursement(reimb);
+					
+					response.sendRedirect("/static/manager.html");
+				}
+				
+				break;
+			}
+			break;
+		case "PUT":
+			switch(path) { 
+			case "logout":
+				session.invalidate();
 				break;
 			}
 			break;

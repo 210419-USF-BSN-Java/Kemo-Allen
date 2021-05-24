@@ -158,7 +158,7 @@ function displayReimbP(response){
     }
 }
 
-function displayReimbP(response){
+function displayReimbR(response){
     let body = document.getElementById('body');
     let br = document.createElement('br');
 
@@ -175,7 +175,7 @@ function displayReimbP(response){
                         Status:  ${obj.reimbStatus} 
                         Amount:  ${obj.reimbAmount} 
                         Time Sent:  ${obj.reimbSubmitted} 
-                        Time Sent:  ${obj.reimbResolved} 
+                        Time Resolved:  ${obj.reimbResolved} 
                         Description:  ${obj.reimbDescription}`;
         body.appendChild(p);
     }

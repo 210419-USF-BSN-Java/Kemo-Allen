@@ -20,4 +20,6 @@ public interface ReimbursementService {
 	boolean changeReimbursement(Reimbursement reimb);
 	
 	boolean removeReimbursementById(int id);
+	
+	boolean checkIfUnresolved(int id);
 }

@@ -1,13 +1,16 @@
+
 document.getElementById('pending').onclick = getPendingM;
 document.getElementById('resolved').onclick = getResolvedM;
 document.getElementById('employees').onclick = getEmployees;
 document.getElementById('viewEmp').onclick = createReimbSearch;
 document.getElementById('getEmpReimb').onclick = viewEmployeeReimb;
+document.getElementById('manageReimb').onclick = createReimbUpdate;
+document.getElementById('updateReimb').onclick = sendReimbStatus;
 
 function createReimbSearch(){
     let body = document.getElementById('body');
     body.innerHTML = 
-    `<form action="../manager/viewEmployeeReimbursement" id="empSearch" method="POST">
+    `<form action="../manager/viewEmployeeReimbursement" method="POST">
         <label for="empId">Enter Employee ID</label>
         <input type="number" id="empId" name="empId" min="0" required>
         <button type="submit" id="getEmpReimb">Get Reimbursements</button>
@@ -15,13 +18,38 @@ function createReimbSearch(){
     `
 }
 
-async function viewEmployeeReimb(){ //Not Applicable?
-    apiURL = 'http://localhost:8080/manager/viewEmployeeReimbursement';
+function createReimbUpdate(){
+    let body = document.getElementById('body');
+    body.innerHTML = 
+    `<form action="../manager/editReimbursementStatus" method="POST">
+        <label for="reimbId">Enter Reimbursement ID</label>
+        <input type="number" id="reimbId" name="reimbId" min="0" required>
+        <select name="status" id="status" required>
+            <option value ="1">Accept</option>
+            <option value ="2">Reject</option>
+        </select>
+        <button type="submit" id="updateReimb">Update Reimbursement</button>
+    </form>
+    `
+}
+
+async function sendReimbStatus(){
+    apiURL = 'http://localhost:8080/manager/editReimbursementStatus';
     let response = await fetch(apiURL);
 
     if(response.status >= 200 && response.status < 300){
-        let data = await response.json();
-        displayEmployeeReimb(data);
+        let data = await response.json(); //Not Applicable?
+    }else{
+        document.getElementById('body').innerHTML = `<p> Error Update Reimb Status </p>`
+    }
+}
+
+async function viewEmployeeReimb(){ 
+    apiURL = 'http://localhost:8080/manager/viewEmployeeReimbursement';
+    let response = await fetch(apiURL);
+
+    if(response.status >= 200 && response.status < 300){ 
+        let data = await response.json(); //Not Applicable?
     }else{
         document.getElementById('body').innerHTML = `<p> Error Get Employee Data  </p>`
     }

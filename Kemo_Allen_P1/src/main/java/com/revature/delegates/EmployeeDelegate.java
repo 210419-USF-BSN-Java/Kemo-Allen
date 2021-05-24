@@ -1,12 +1,10 @@
 package com.revature.delegates;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -39,8 +37,6 @@ public class EmployeeDelegate implements Delegateable{
 		reimbDao = new ReimbDAOImpl();
 		reimbService = new ReimbServiceImpl(reimbDao);
 		
-		PrintWriter pw = response.getWriter();
-		
 		String path = (String) request.getAttribute("path");
 		
 		//Add time datatype to Jackson
@@ -49,8 +45,6 @@ public class EmployeeDelegate implements Delegateable{
 		//Get the user id from the session
 		HttpSession session = request.getSession();
 		Integer id = tryParseInt((String)(session.getAttribute("id")));
-		
-		System.out.println(request.getMethod());
 		
 		switch(request.getMethod()) {
 		case "GET":
@@ -65,7 +59,7 @@ public class EmployeeDelegate implements Delegateable{
 				response.getWriter().write(om.writeValueAsString(pendingList));
 				break;
 			case "viewResolved":
-				List<Reimbursement> resolvedList = reimbService.getReimbursementsByAuthorAndStatus(id, 1);
+				List<Reimbursement> resolvedList = reimbService.getResolvedReimbursements();
 				response.getWriter().write(om.writeValueAsString(resolvedList));
 				break;
 			default:
@@ -110,15 +104,10 @@ public class EmployeeDelegate implements Delegateable{
 				break; 
 			}
 		case "PUT":
-			switch(path) { //DO as post
-//			case "updateProfile":
-//				User user = userService.getUserById(id);
-//				String fName = request.getParameter("firstName");
-//				String lName = request.getParameter("lastName");
-//				
-//				System.out.println(fName + lName);
-//				System.out.println("In method");
-//				break;
+			switch(path) { 
+			case "logout":
+				session.invalidate();
+				break;
 			}
 			break;
 		default:

@@ -22,6 +22,7 @@ public interface UserService {
 	
 	boolean removeUser(int id);
 	
+	boolean checkIfNewUser(String userName);
 	//Encrpyt password
 	
 }

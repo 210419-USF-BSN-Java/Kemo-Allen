@@ -96,6 +96,19 @@ public class UserServiceImpl implements UserService{
 		}
 		
 	}
+
+	@Override
+	public boolean checkIfNewUser(String userName) {
+		List<User> userList = getAllUsers();
+		
+		for(User u: userList) {
+			if(userName.compareTo(u.getUserName()) == 0) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 	
 	
 }

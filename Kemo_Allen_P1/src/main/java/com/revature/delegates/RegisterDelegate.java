@@ -2,26 +2,22 @@ package com.revature.delegates;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.User;
 import com.revature.repository.UserDAO;
 import com.revature.repository.UserDAOImpl;
 import com.revature.service.UserService;
 import com.revature.service.UserServiceImpl;
 
-public class LoginDelegate implements Delegateable{
-	
-	private ObjectMapper om = new ObjectMapper();
+public class RegisterDelegate implements Delegateable{
+
 	private UserDAO userDao;
 	private UserService userService;
-
+	
 	@Override
 	public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		userDao = new UserDAOImpl();
@@ -33,24 +29,30 @@ public class LoginDelegate implements Delegateable{
 		case "POST":
 			String userName = request.getParameter("username");
 			String password = request.getParameter("password");	
+			String firstName = request.getParameter("firstname");
+			String lastName = request.getParameter("lastname");
+			String email = request.getParameter("email");
+			String userRole = request.getParameter("userrole");
 			
-			User loggedInUser = userService.loginUser(userName, password);
+			boolean isNew = userService.checkIfNewUser(userName); 
 			
-			if(loggedInUser != null) {
-				response.setStatus(201);
+			if(isNew) {
+				Integer roleNum = tryParseInt(userRole);
 				
-				request.getSession().setAttribute("id", loggedInUser.getId()+"");
+				response.setStatus(201);
+				User user = new User(0, userName, password, firstName, lastName, email, roleNum);
+				userService.addUser(user);
 				
 				//createCookie(loggedInUser, response);
 
-				if(loggedInUser.getUserRole() == 2) {
+				if(user.getUserRole() == 2) {
 					response.sendRedirect("static/manager.html");
 				}else {
 					response.sendRedirect("static/employee.html");
 				}
 			} else {
 				String htmlResponse = "<html>";
-				htmlResponse += "<h2>The password was either incorrect or user " + userName + " doesn't exist.</h2>";
+				htmlResponse += "<h2>The user name " + userName + " is aleady taken.</h2>";
 				htmlResponse += "</html>";
 				 
 				pw.println(htmlResponse);
@@ -64,14 +66,16 @@ public class LoginDelegate implements Delegateable{
 		
 	}
 	
-	public void createCookie(User user, HttpServletResponse response) {
-		//Cookie cookies[]=request.getCookies();
+	public Integer tryParseInt(String input) {
+		Integer num;
 		
-		Cookie newCookie = new Cookie("userId", user.getId() +"");
+		try {
+			num = Integer.parseInt(input);
+		}catch(NumberFormatException e){
+			num = 1;
+		}
 		
-		response.addCookie(newCookie);
-		
+		return num;
 	}
 
-	
 }
