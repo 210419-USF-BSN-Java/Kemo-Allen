@@ -76,6 +76,26 @@ public class UserServiceImpl implements UserService{
 	public boolean removeUser(int id) {
 		return ud.deleteUser(id);
 	}
+
+	@Override
+	public void modifyUser(User user, String firstName, String lastName, String password, String email) {
+		if(firstName.compareTo(user.getFirstName()) != 0 && firstName.compareTo("") != 0) {
+			user.setFirstName(firstName);
+		}
+		
+		if(lastName.compareTo(user.getLastName()) != 0 && lastName.compareTo("") != 0) {
+			user.setLastName(lastName);
+		}
+		
+		if(password.compareTo(user.getPassword()) != 0 && password.compareTo("") != 0) {
+			user.setPassword(password);
+		}
+		
+		if(email.compareTo(user.getEmail()) != 0 && email.compareTo("") != 0) {
+			user.setEmail(email);
+		}
+		
+	}
 	
 	
 }

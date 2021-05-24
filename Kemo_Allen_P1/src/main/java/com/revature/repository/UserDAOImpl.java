@@ -196,7 +196,7 @@ public class UserDAOImpl implements UserDAO{
 	@Override
 	public boolean updateUserInfo(User user) {
 		boolean success = false;
-		String sql = "UPDATE ers_users SET ers_password = ?, user_first_name = ?, user_last_name = ? "
+		String sql = "UPDATE ers_users SET ers_password=?, user_first_name=?, user_last_name=?, user_email=? "
 				+ "WHERE ers_user_id = ?";
 		
 		try(Connection conn = ERSConnection.getConnection()){
@@ -204,7 +204,8 @@ public class UserDAOImpl implements UserDAO{
 			ps.setString(1, user.getPassword());
 			ps.setString(2, user.getFirstName());
 			ps.setString(3, user.getLastName());
-			ps.setInt(4, user.getId());
+			ps.setString(4, user.getEmail());
+			ps.setInt(5, user.getId());
 			
 			ps.execute();
 			

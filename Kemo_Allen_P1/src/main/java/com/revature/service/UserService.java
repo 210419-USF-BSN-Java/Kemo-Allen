@@ -18,6 +18,8 @@ public interface UserService {
 	
 	boolean changeUserInfo(User user);
 	
+	void modifyUser(User user, String fName, String lName, String password, String email);
+	
 	boolean removeUser(int id);
 	
 	//Encrpyt password

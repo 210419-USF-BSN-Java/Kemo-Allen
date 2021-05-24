@@ -1,45 +1,20 @@
 document.getElementById('profile').onclick = getProfile;
-
 document.getElementById('viewPending').onclick = getPending;// () calls fucnction without event
-
 document.getElementById('viewResolved').onclick = getResolved;
-
 document.getElementById('createForm').onclick = createForm;
-
 document.getElementById('submitForm').onclick= submitForm;
-
 document.getElementById('updateProfile').onclick= updateProfile;
-//document.getElementById('profile').onclick = testClick;
+document.getElementById('passwordBox').onclick = togglePassword;
 
 // let create = document.getElementById('submitForm');
 // create.addEventListener('click', testSubmit, false);
-
-function testClick(){
-        var p = document.createElement('p');
-        p.innerHTML = 'Hello';
-        document.getElementById('body').appendChild(p);
-}
-
-function createForm(){
-    let body = document.getElementById('body');
-    body.innerHTML = ` 
-    <form action="../employee/submitForm" method="POST">
-        <h4>Enter Reimbursement Info </h4>
-        <label for="type">Type</label>
-        <select name="type" id="type" required>
-            <option value="1">Lodging</option>
-            <option value="2">Food</option>
-            <option value="3">Other</option>
-        </select>
-        <br>
-        <label for="amount">Amount: </label>
-        <input type="number" id="amount" name="amount" class="form-control" min="0" max="10000" required>
-        <label for="desc">Description:</label>
-        <input type="text" id="desc" name="desc" class="form-control" maxlength="200">
-        
-        <button type ="submit" id="submitForm">Submit Reimbursement</button>
-    </form>
-    `
+function togglePassword(){
+    let p = document.getElementById("password");
+    if(p.type === "password"){
+        p.type ="text";
+    } else{
+        p.type = "password";
+    }
 }
 
 async function submitForm(){
@@ -75,7 +50,6 @@ async function getProfile(){
     if(response.status >= 200 && response.status < 300){
         let data = await response.json();
         displayProfile(data);
-        //displayProfile();
     }else{
         document.getElementById('body').innerHTML = `<p> Error Profile. </p>`
     }
@@ -99,7 +73,7 @@ async function getPending(){
 	
     if(response.status >= 200 && response.status < 300){
         let data = await response.json();
-        displayReimb(data);
+        displayReimbP(data);
     }else{
         document.getElementById('body').innerHTML = `<p> Error View Pending  </p>`
     }
@@ -111,28 +85,58 @@ async function getResolved(){
 	
     if(response.status >= 200 && response.status < 300){
         let data = await response.json();
-        displayReimb(data);
+        displayReimbR(data);
     }else{
         document.getElementById('body').innerHTML = `<p> Error View Pending  </p>`
     }
 }
 
+function createForm(){
+    let body = document.getElementById('body');
+    body.innerHTML = ` 
+    <form action="../employee/submitForm" method="POST">
+        <h4>Enter Reimbursement Info </h4>
+        <label for="type">Type</label>
+        <select name="type" id="type" required>
+            <option value="1">Lodging</option>
+            <option value="2">Food</option>
+            <option value="3">Other</option>
+        </select>
+        <br>
+        <label for="amount">Amount: </label>
+        <input type="number" id="amount" name="amount" class="form-control" min="0" max="10000" required>
+        <label for="desc">Description:</label>
+        <input type="text" id="desc" name="desc" class="form-control" maxlength="200">
+        
+        <button type ="submit" id="submitForm">Submit Reimbursement</button>
+    </form>
+    `
+}
+
 function displayProfile(response){
     document.getElementById('body').innerHTML =
-     `<label>User Name: </label> <input type='text' value ='${response.userName}'></input>
-     <br>
-     <label>First Name: </label> <input type='text' id="firstName" name="firstName" value ='${response.firstName}'></input>
-     <br>
-     <label>Last Name: </label> <input type='text' id="lastName"  name="lastName" value ='${response.lastName}'></input>
-     <br>
-     <form action"../employee/updateProfile" method="POST">
+    `<form action="../employee/updateProfile" method="POST">
+        <p>User Id: ${response.id}</p>
+        <p>User Name: ${response.userName}</p> 
+        <label for="email">User Email: </label> 
+        <input type="email" id="email" name="email"  value ="${response.email}" maxlength="150">
+        <br>
+        <label for="firstName">First Name: </label> 
+        <input type="text" id="firstName" name="firstName" value="${response.firstName}" minlength="3" maxlength="100">
+        <br>
+        <label for="lastName">Last Name: </label> 
+        <input type="text" id="lastName" name="lastName" value="${response.lastName}" minlength="3" maxlength="100">
+        <br>
+        <label for="password">Password: </label> 
+        <input type="password" id="password" name="password" value="${response.password}" minlength="3" maxlength="50">
+        <input type="checkbox" id="passwordBox">Show Password
+        <br>
         <button type="submit" id="updateProfile">Update Profile</button>
      </form>
      `
-
 }
 
-function displayReimb(response){
+function displayReimbP(response){
     let body = document.getElementById('body');
     let br = document.createElement('br');
 
@@ -149,6 +153,29 @@ function displayReimb(response){
                         Status:  ${obj.reimbStatus} 
                         Amount:  ${obj.reimbAmount} 
                         Time Sent:  ${obj.reimbSubmitted} 
+                        Description:  ${obj.reimbDescription}`;
+        body.appendChild(p);
+    }
+}
+
+function displayReimbP(response){
+    let body = document.getElementById('body');
+    let br = document.createElement('br');
+
+    //Clear old display
+    while(body.firstChild){
+        body.removeChild(body.firstChild);
+    }
+
+    for(var i = 0; i < response.length; i++){
+        var obj = response[i];
+        // document.getElementById('body').innerHTML = `<p>${obj.id}</p>`
+        var p = document.createElement('p');
+        p.textContent = `ID: ${obj.id} 
+                        Status:  ${obj.reimbStatus} 
+                        Amount:  ${obj.reimbAmount} 
+                        Time Sent:  ${obj.reimbSubmitted} 
+                        Time Sent:  ${obj.reimbResolved} 
                         Description:  ${obj.reimbDescription}`;
         body.appendChild(p);
     }

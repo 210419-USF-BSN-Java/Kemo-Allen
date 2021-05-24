@@ -43,6 +43,7 @@ public class ManagerDelegate implements Delegateable{
 				
 		//Add time datatype to Jackson
 		om.registerModule(new JavaTimeModule());
+		System.out.println(path);
 		
 		switch(request.getMethod()) {
 		case "GET":
@@ -59,17 +60,63 @@ public class ManagerDelegate implements Delegateable{
 				List<User> empList = userService.getAllEmployees();
 				response.getWriter().write(om.writeValueAsString(empList));
 				break;
+			case "viewEmployeeReimbursement":
+				System.out.println("Inside");
+				String query = request.getQueryString();
+				System.out.println(query);
+				
+//				String id = request.getParameter("empId");
+//				Integer empId = tryParseInt(id);
+//				List<Reimbursement> employeeReimb = reimbService.getReimbursementsByAuthor(empId);
+//				
+//				if(employeeReimb.isEmpty()) {
+//					response.getWriter().write(om.writeValueAsString(null));
+//				}
+//				else {
+//					response.getWriter().write(om.writeValueAsString(employeeReimb));
+//				}
+				
+				break;
 			default:
 				break;
 			}
 		
 			break;
 		case "POST":
+			switch(path) { //Create View
+			case "viewEmployeeReimbursement":
+				String id = request.getParameter("empId");
+				System.out.println(id);
+
+				Integer empId = tryParseInt(id);
+				List<Reimbursement> employeeReimb = reimbService.getReimbursementsByAuthor(empId);
+				
+				if(employeeReimb.isEmpty()) {
+					response.getWriter().write(om.writeValueAsString(null));
+				}
+				else {
+					response.getWriter().write(om.writeValueAsString(employeeReimb));
+				}
+				
+				break;
+			}
 			break;
 		default:
 			break;
 		}
 		
+	}
+	
+	public Integer tryParseInt(String input) {
+		Integer num;
+		
+		try {
+			num = Integer.parseInt(input);
+		}catch(NumberFormatException e){
+			num = 0;
+		}
+		
+		return num;
 	}
 
 }

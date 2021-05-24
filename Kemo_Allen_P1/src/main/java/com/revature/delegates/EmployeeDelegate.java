@@ -100,9 +100,12 @@ public class EmployeeDelegate implements Delegateable{
 				User user = userService.getUserById(id);
 				String fName = request.getParameter("firstName");
 				String lName = request.getParameter("lastName");
+				String password = request.getParameter("password");
+				String email = request.getParameter("email");		
 				
-				System.out.println(fName + lName);
-				System.out.println("In method");
+				userService.modifyUser(user, fName, lName, password, email);
+				userService.changeUserInfo(user);
+				
 				response.sendRedirect("/static/employee.html");
 				break; 
 			}
@@ -123,16 +126,6 @@ public class EmployeeDelegate implements Delegateable{
 		
 		}
 		
-	}
-	
-	public Integer getIdFromCookies(HttpServletRequest request) {
-		Cookie cookies[] = request.getCookies();
-		
-		for(Cookie c: cookies) {
-			
-		}
-		
-		return 0;
 	}
 	
 	public Integer tryParseInt(String input) {
