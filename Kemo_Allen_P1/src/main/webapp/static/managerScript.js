@@ -6,14 +6,31 @@ document.getElementById('viewEmp').onclick = createReimbSearch;
 document.getElementById('getEmpReimb').onclick = viewEmployeeReimb;
 document.getElementById('manageReimb').onclick = createReimbUpdate;
 document.getElementById('updateReimb').onclick = sendReimbStatus;
+document.getElementById('logoutButton').onclick = logout;
 
-function createReimbSearch(){
+async function logout(){
+    apiURL = 'http://localhost:8080/manager/logout';
+
+    let response = await fetch(apiURL);
+}
+
+function createReimbSearch(){ //Put both here for now
     let body = document.getElementById('body');
     body.innerHTML = 
     `<form action="../manager/viewEmployeeReimbursement" method="POST">
         <label for="empId">Enter Employee ID</label>
         <input type="number" id="empId" name="empId" min="0" required>
         <button type="submit" id="getEmpReimb">Get Reimbursements</button>
+    </form>
+    <br>
+    <form action="../manager/editReimbursementStatus" method="POST">
+        <label for="reimbId">Enter Reimbursement ID</label>
+        <input type="number" id="reimbId" name="reimbId" min="0" required>
+        <select name="status" id="status" required>
+            <option value ="1">Accept</option>
+            <option value ="2">Reject</option>
+        </select>
+        <button type="submit" id="updateReimb">Update Reimbursement</button>
     </form>
     `
 }

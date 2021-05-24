@@ -59,7 +59,7 @@ public class EmployeeDelegate implements Delegateable{
 				response.getWriter().write(om.writeValueAsString(pendingList));
 				break;
 			case "viewResolved":
-				List<Reimbursement> resolvedList = reimbService.getResolvedReimbursements();
+				List<Reimbursement> resolvedList = reimbService.getUserResolvedReimbursements(id);
 				response.getWriter().write(om.writeValueAsString(resolvedList));
 				break;
 			default:
@@ -102,13 +102,13 @@ public class EmployeeDelegate implements Delegateable{
 				
 				response.sendRedirect("/static/employee.html");
 				break; 
-			}
-		case "PUT":
-			switch(path) { 
 			case "logout":
 				session.invalidate();
+				response.sendRedirect("/index.html");
 				break;
 			}
+		case "PUT":
+
 			break;
 		default:
 			break;

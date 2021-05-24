@@ -29,7 +29,6 @@ public class ManagerDelegate implements Delegateable{
 	private ReimbursementDAO reimbDao;
 	private ReimbursementService reimbService;
 
-
 	@Override
 	public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		//DAOs and Services
@@ -44,7 +43,7 @@ public class ManagerDelegate implements Delegateable{
 		om.registerModule(new JavaTimeModule());
 		HttpSession session = request.getSession();
 		Integer id = tryParseInt((String)(session.getAttribute("id")));
-		System.out.println(path);
+		//System.out.println(path);
 		
 		switch(request.getMethod()) {
 		case "GET":
@@ -100,16 +99,15 @@ public class ManagerDelegate implements Delegateable{
 					
 					response.sendRedirect("/static/manager.html");
 				}
-				
+				break;
+			case "logout":
+				session.invalidate();
+				response.sendRedirect("/index.html");
 				break;
 			}
 			break;
 		case "PUT":
-			switch(path) { 
-			case "logout":
-				session.invalidate();
-				break;
-			}
+
 			break;
 		default:
 			break;

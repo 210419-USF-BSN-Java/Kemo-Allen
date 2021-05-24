@@ -5,9 +5,14 @@ document.getElementById('createForm').onclick = createForm;
 document.getElementById('submitForm').onclick= submitForm;
 document.getElementById('updateProfile').onclick= updateProfile;
 document.getElementById('passwordBox').onclick = togglePassword;
+document.getElementById('logoutButton').onclick = logout;
 
-// let create = document.getElementById('submitForm');
-// create.addEventListener('click', testSubmit, false);
+async function logout(){
+    apiURL = 'http://localhost:8080/employee/logout';
+
+    let response = await fetch(apiURL);
+}
+
 function togglePassword(){
     let p = document.getElementById("password");
     if(p.type === "password"){

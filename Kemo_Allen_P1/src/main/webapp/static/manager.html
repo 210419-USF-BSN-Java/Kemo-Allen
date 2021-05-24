@@ -11,29 +11,21 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand">Revature</a>
+	<a class="navbar-brand">Revature</a>
 		
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	</button>
 		
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<li class ="nav-item">
-                    <a class="nav-link" href="../index.html">Logout</a>
-				</li>		
-			</ul>
-		</div>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class ="nav-item">
+                <a class="nav-link" href="../index.html">Logout</a>
+			</li>		
+		</ul>
+	</div>
 	</nav>
     <h2>Manager Page</h2>
-    <form>
-        <button type="button" id="manageReimb">Manage Employee Reimbursements</button>
-    </form>
-    <br>
-    <form>
-        <button type="button" id="viewEmp">View Employee Requests</button>
-    </form>
-    <br>
     <form action="../manager/viewPending" method="GET">
         <button type="button" id="pending">View Pending Requests</button>
     </form>
@@ -42,8 +34,20 @@
         <button type="button" id="resolved">View Resolved Requests</button>
     </form>
     <br>
+    <form>
+        <button type="button" id="manageReimb">Manage Employee Reimbursements</button>
+    </form>
+    <br>
     <form action="../manager/viewEmployees" method="GET">
         <button type="button" id ="employees">View All Employees</button>
+    </form>
+    <br>
+    <form>
+        <button type="button" id="viewEmp">View Employee Requests</button>
+    </form>
+    <br>
+    <form action="../employee/logout" method="POST">
+        <button type="submit" id ="logoutButton">Logout</button>
     </form>
 
     <div class ="row">
